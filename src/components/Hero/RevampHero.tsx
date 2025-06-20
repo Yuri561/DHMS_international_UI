@@ -14,8 +14,8 @@ const RevampHero: React.FC = () => {
         transition={{ duration: 0.8 }}
         className="flex flex-col items-center md:items-center justify-center text-center md:text-right px-4 space-y-6"
       >
-        <div className="text-nowrap items-center justify-center pl-4 md:pl-9 flex flex-col">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-[satisfy] text-white leading-tight">
+        <div className="items-center justify-center pl-4 md:pl-9 flex flex-col">
+          <h1 className="text-4xl lg:text-nowrap sm:text-5xl md:text-6xl lg:text-7xl font-[satisfy] text-white leading-tight">
             Where Culture Meets Beauty
           </h1>
           <p className="text-base sm:text-lg text-white mt-4 max-w-xs sm:max-w-sm md:max-w-md">
