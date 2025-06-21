@@ -26,6 +26,9 @@ export const userRegister = async (FormData: any) => {
 // fetch all products 
 export const fetchProducts = async ()=> {
   return axios.get(`${API_URL}/products`, {
-    headers: {'Content-Type': "application/json"}
-  })
+    headers: {'Content-Type': "application/json"
+    },
+  withCredentials:true,
+  
+})
 }

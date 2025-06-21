@@ -9,36 +9,37 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { useAuth } from '../Context/AuthContext';
- import { useState, useEffect} from 'react';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import { useState, useEffect } from 'react';
 
 export default function NavigationMenuBeauty() {
   const { isAuthenticated } = useAuth(); 
+  const [loadingAnimation, setLoadingAnimation] = useState(false);
+  const location = useLocation();
 
-    const [loadingAnimation, setLoadingAnimation] = useState<boolean>(false);
-    const location = useLocation();
-    useEffect(()=> {
-      if (loadingAnimation){
-        const timeout = setTimeout(()=> setLoadingAnimation(false), 800)
-        return()=> clearTimeout(timeout)
-      }
-    },[location]) 
-    const handleClick = () => {
-      setLoadingAnimation(true)
+  // Stop animation when route changes
+  useEffect(() => {
+    if (loadingAnimation) {
+      const timeout = setTimeout(() => setLoadingAnimation(false), 800); // Delay to let animation play
+      return () => clearTimeout(timeout);
     }
+  }, [location]);
+
+  const handleClick = () => {
+    setLoadingAnimation(true);
+  };
 
   return (
     <NavigationMenu>
-      {loadingAnimation && <LoadingAnimation/>}
-      <NavigationMenuList className="text-white text-md">
+      {loadingAnimation && <LoadingAnimation />}
+      <NavigationMenuList className="text-white text-xs">
 
         {/* Home */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <OffsetLink
               to="/home#top"
-              onClick= {handleClick}
-              
+              onClick={handleClick}
               className="hover:bg-[#f3cb50] rounded-full px-3 py-1 transition"
             >
               Home
@@ -48,10 +49,10 @@ export default function NavigationMenuBeauty() {
 
         {/* Categories Dropdown */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="rounded-full bg-black text-md">
+          <NavigationMenuTrigger className="rounded-full px-3 py-1 bg-[#d5a86b] transition">
             Categories
           </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-black text-white">
+          <NavigationMenuContent className=" bg-[#d5a86b] text-white">
             <ul className="grid gap-2 p-2 w-48">
               {[
                 { to: '/categories/handbags', label: 'Handbags' },
@@ -61,10 +62,12 @@ export default function NavigationMenuBeauty() {
               ].map((item) => (
                 <li
                   key={item.to}
-                  className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
+                  className="rounded-full px-3 py-1  transition"
                 >
                   <NavigationMenuLink asChild>
-                    <Link to={item.to}>{item.label}</Link>
+                    <Link to={item.to} onClick={handleClick}>
+                      {item.label}
+                    </Link>
                   </NavigationMenuLink>
                 </li>
               ))}
@@ -78,7 +81,6 @@ export default function NavigationMenuBeauty() {
             <OffsetLink
               to="/shop#top"
               onClick={handleClick}
-
               className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
             >
               Shop
@@ -99,8 +101,7 @@ export default function NavigationMenuBeauty() {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Optional: Show profile or logout if authenticated */}
-        
+        {/* Dashboard (if authenticated) */}
         {isAuthenticated && (
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
@@ -114,7 +115,7 @@ export default function NavigationMenuBeauty() {
             </NavigationMenuLink>
           </NavigationMenuItem>
         )}
-        
+
       </NavigationMenuList>
     </NavigationMenu>
   );

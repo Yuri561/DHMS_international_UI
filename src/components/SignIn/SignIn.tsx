@@ -5,22 +5,22 @@ import { userLogin } from '../AuthFolder/AuthFiles';
 import { Mail } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
-
 import { useAuth } from '../Context/AuthContext';
-import { useDispatch } from 'react-redux';
-import { fetchCart} from '../../store/cartSlice';
-import { AppDispatch } from '@/store/store';
+import { useCart } from '../Context/CartContext';
+
 
 interface FormData {
-    email: string;
+    username: string;
     password: string;
     
 }
 
 const SignIn: React.FC = () => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const dispatch = useDispatch<AppDispatch>()
-    const {setIsAuthenticated} = useAuth();
+  const {fetchCart} = useCart()
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const {setIsAuthenticated} = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -41,9 +41,11 @@ const SignIn: React.FC = () => {
       const response = await userLogin(data);
       if (response.status === 200) {
         const user = response.data;
+        // for debugging purposes 
+        console.log('here is the response')
         setIsAuthenticated(true);
-        localStorage.setItem('email', user.email);
-        await dispatch(fetchCart());
+        localStorage.setItem('username', user.username);
+        await fetchCart();
         navigate('/dashboard');
       } else {
         setError('Unable to sign in');
@@ -98,12 +100,12 @@ const SignIn: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm text-center space-y-4">
                 <div className="text-left flex flex-col space-y-6 text-lg font-semibold text-[#f3cb50] mb-2">
                   <input
-                    {...register('email', { required: 'Email is required!' })}
-                    type="email"
-                    placeholder="Email Address"
+                    {...register('username', { required: 'Username is required!' })}
+                    type="name"
+                    placeholder="Username"
                     className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   />
-                  {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                  {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
 
                   <input
                     {...register('password', { required: 'Password is required!' })}

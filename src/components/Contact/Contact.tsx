@@ -47,7 +47,7 @@ const Contact = () => {
     };
 
     return (
-        <section className="min-h-screen bg-transparent flex flex-col justify-center items-center px-6 py-24 bg-black text-white">
+        <section className="min-h-screen mt-12 bg-transparent flex flex-col justify-center items-center px-6 py-24 bg-black text-white">
             {/* Background Video */}
             <video
                 autoPlay

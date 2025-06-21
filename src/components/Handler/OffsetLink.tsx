@@ -9,6 +9,7 @@ interface OffsetLinkProps {
   to: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const OffsetLink: React.FC<OffsetLinkProps> = ({onClick, to, children, className }) => {

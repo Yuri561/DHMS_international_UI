@@ -4,11 +4,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { userRegister } from '../AuthFolder/AuthFiles';
 import { Eye, EyeOff, Mail } from 'lucide-react';
 import signupng from '../../assets/signup.jpg'
-
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 interface FormData {
   email: string;
   password: string;
+  username: string;
   confirmPassword: string;
   shippingAddress: string;
 }
@@ -90,8 +90,8 @@ const SignUp: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-white">
             <div className="flex flex-col justify-center items-center mt-6 md:mt-0 text-center space-y-4">
               <h1 className="text-5xl font-[satisfy] text-[#f3cb50]">Your journey starts here</h1>
-              <img src={signupng} alt="Sign up" className="w-80 rounded-md mx-auto shadow-lg object-contain mb-6" />
-            </div>
+             
+            </div> <img src={signupng} alt="Sign up" className="w-80 rounded-md mx-auto shadow-lg object-contain mb-6" />
 
             <div className="flex flex-col justify-center items-center space-y-4">
               <h2 className="text-2xl sm:text-4xl font-extrabold text-[#f3cb50]">Become a member</h2>
@@ -99,6 +99,12 @@ const SignUp: React.FC = () => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm text-center space-y-4">
                 <div className="text-left flex flex-col space-y-6 text-lg font-semibold text-[#f3cb50] mb-2">
+                  <input
+                    {...register('username', { required: 'username is required!' })}
+                    type="name"
+                    placeholder="username"
+                    className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  />
                   <input
                     {...register('email', { required: 'Email is required!' })}
                     type="email"

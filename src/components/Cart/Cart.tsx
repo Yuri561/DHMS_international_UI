@@ -1,23 +1,31 @@
 import React, { useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchCart,
-  removeFromCartServer,
-  updateQty,
-} from '@/store/cartSlice';
-import type { AppDispatch } from '@/store/store';
+import { useCart } from '../Context/CartContext';
+import toast from 'react-hot-toast';
 
 const Cart: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const cartItems = useSelector((state: any) => state.cart.itemsList);
-  const subtotal = cartItems.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
+  const { cart, fetchCart, removeFromCart, updateQty } = useCart();
+  const cartItems = cart || [];
+
+  const subtotal: number = cartItems.reduce((acc: number, item: any) => {
+    const price = parseFloat(item.price) || 0;
+    const quantity = parseInt(item.quantity) || 0;
+    return acc + price * quantity;
+  }, 0);
+
   const deliveryFee = 4.99;
   const total = subtotal + deliveryFee;
 
   useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        await fetchCart();
+      } catch (err) {
+        console.error('Error fetching cart:', err);
+      }
+    };
+    fetchData();
+  }, [fetchCart]);
 
   return (
     <div className='bg-black flex flex-col items-center justify-center px-2 md:px-6 py-10 mt-28 pt-36 md:pt-28 lg:pt-24'>
@@ -33,46 +41,59 @@ const Cart: React.FC = () => {
               <span>Price</span>
               <span>Action</span>
             </div>
+
             {cartItems.length === 0 ? (
               <div className='text-center p-4'>
                 <p className='text-gray-500'>Your cart is empty.</p>
               </div>
             ) : (
               cartItems.map((item: any, index: number) => (
-                <div key={index} className='grid grid-cols-4 items-center text-center p-4 border-b'>
-                  <img src={item.image} alt='Product' className='w-16 h-16 mx-auto rounded' />
+                <div
+                  key={item._id || index}
+                  className='grid grid-cols-4 items-center text-center p-4 border-b'
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name || 'Product image'}
+                    className='w-16 h-16 mx-auto rounded'
+                  />
+
                   <div className='flex items-center justify-center gap-2'>
                     <button
-                      onClick={() =>
-                        dispatch(
-                          updateQty({
-                            id: item.productId,
-                            quantity: Math.max(item.quantity - 1, 1),
-                          })
-                        )
-                      }
+                      onClick={() => {
+                        const qty = parseInt(item.quantity) || 0;
+                        if (qty > 1) {
+                          updateQty(item._id, qty - 1);
+                        } else {
+                          removeFromCart(item._id); // delete if quantity is 1
+                          toast.success("successfully removed quantity")
+                        }
+                      }}
                       className='px-2 py-1 cursor-pointer bg-gray-200 rounded'
                     >
                       -
                     </button>
+
                     <span>{item.quantity}</span>
+
                     <button
-                      onClick={() =>
-                        dispatch(
-                          updateQty({
-                            id: item.productId,
-                            quantity: item.quantity + 1,
-                          })
-                        )
-                      }
+                      onClick={() => {
+                        const qty = parseInt(item.quantity) || 0;
+                        if (qty < 50) {
+                          updateQty(item._id, qty + 1);
+                          toast.success("successfully added quantity")
+                        }
+                      }}
                       className='px-2 py-1 cursor-pointer bg-gray-200 rounded'
                     >
                       +
                     </button>
                   </div>
-                  <span>${item.price.toFixed(2)}</span>
+
+                  <span>${(parseFloat(item.price) || 0).toFixed(2)}</span>
+
                   <button
-                    onClick={() => dispatch(removeFromCartServer(item.productId))}
+                    onClick={() => removeFromCart(item._id)}
                     className='text-red-500 cursor-pointer hover:text-red-700'
                   >
                     <Trash2 className='w-5 h-5 mx-auto' />
@@ -89,15 +110,15 @@ const Cart: React.FC = () => {
             <h2 className='text-lg font-semibold mb-4'>Order Summary</h2>
             <div className='flex justify-between mb-2'>
               <span>SubTotal</span>
-              <span>{subtotal.toFixed(2)} USD</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className='flex justify-between mb-2'>
               <span>Discount</span>
-              <span>$0.00 USD</span>
+              <span>$0.00</span>
             </div>
             <div className='flex justify-between mb-4'>
               <span>Delivery Fee</span>
-              <span>$4.99 USD</span>
+              <span>${deliveryFee.toFixed(2)}</span>
             </div>
             <div className='flex justify-between text-lg font-bold mb-6'>
               <span>Total</span>

@@ -1,17 +1,33 @@
-import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
+import { motion } from 'framer-motion';
+import React from 'react';
+import Marquee from 'react-fast-marquee';
 
 const SearchBar: React.FC = () => {
   return (
-    <div className="relative w-full  justify-between  max-w-2xl">
-      <Input
-        type="search"
-        placeholder="Search"
-        className="pl-10  bg-white text-center rounded-full "
-      />
-      <Search className="  absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-    </div>
-  )
-}
+    <motion.section
+      id="banner"
+      className="w-full h-8  text-white text-sm overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      viewport={{ once: true }}
+    >
+      <Marquee
+        className="h-full whitespace-nowrap"
+        gradient={false}
+        speed={50}
+      >
+        <a
+          href="https://www.google.com/maps/place/137+Spotsylvania+Mall+Dr,+Fredericksburg,+VA+22407"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+        >
+          📍 DHMS International • 137 Spotsylvania Mall Dr, Fredericksburg, VA 22407 •
+        </a>
+      </Marquee>
+    </motion.section>
+  );
+};
 
-export default SearchBar
+export default SearchBar;

@@ -36,7 +36,6 @@ export const ProductsDb = [
     inStore: true,
     description: "Elevate your everyday look with this stylish bucket shoulder bag, designed in a timeless tan and brown color palette."
   },
-  
   {
     id: 4,
     name: "Black Animal Print",
@@ -390,7 +389,7 @@ export const ProductsDb = [
   },
   {
     id: 33,
-    name: "Mens Ankara Dashiki Shirt",
+    name: "Men's Ankara Dashiki Shirt",
     price: 24.99,
     category: "Men Shirts",
     brand: "African",
@@ -402,7 +401,7 @@ export const ProductsDb = [
   },
    {
     id: 34,
-    name: "Men Striped Printed Shirt ",
+    name: "Men's Striped Printed Shirt ",
     price: 24.99,
     category: "Men Shirts",
     brand: "African",
@@ -558,7 +557,7 @@ export const ProductsDb = [
     rating: 3,
     inStock: true,
     inStore: true,
-    description: "Immerse yourself in the delicate beauty of a floral fragrance. This scent captures the essence of blooming petals,fresh, elegant, and endlessly feminine."
+    description: "Immerse yourself in the delicate beauty of a floral fragrance. This scent captures the essence of blooming petals, fresh, elegant, and endlessly feminine."
   },
    {
     id: 47,
@@ -624,7 +623,7 @@ export const ProductsDb = [
     id: 45,
     name: "Michelle Obama Inspired Oil - Inspired by the quiet power of presence.",
     price: 24.99,
-    category: "Body",
+    category: "Body Products",
     brand: "Fragrance Oil",
     imageUrl: "/Michelle Obama oil.png",
     rating: 4,
@@ -636,7 +635,7 @@ export const ProductsDb = [
     id: 46,
     name: "Mousuf Wardi Roll-On Perfume Oil",
     price: 24.99,
-    category: "Body",
+    category: "Body Products",
     brand: "Mousuf Wardi",
     imageUrl: "/Mousuf Wardi.jpg",
     rating: 4,
@@ -661,7 +660,7 @@ export const ProductsDb = [
     id: 48,
     name: "Lattafa Asad Eau de Parfum ",
     price: 24.99,
-    category: "Body",
+    category: "Body Products",
     brand: "Fragrance",
     imageUrl: "/Lattafa black.png",
     rating: 4,
@@ -734,3 +733,4 @@ export const ProductsDb = [
 
 
 ];
+

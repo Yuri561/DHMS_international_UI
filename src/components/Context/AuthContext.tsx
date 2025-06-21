@@ -13,7 +13,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 interface AuthContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuth: boolean) => void;
-  email: string;
+  username: string;
   loading: boolean;
   logout: () => void;
   login: (formData: any) => Promise<boolean>;
@@ -24,16 +24,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // true by default until we verify
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('email');
-    if (storedEmail) {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
       setIsAuthenticated(true);
-      setEmail(storedEmail);
+      setUsername(storedUsername);
     } else {
       setIsAuthenticated(false);
-      setEmail('');
+      setUsername('');
     }
     setLoading(false);
   }, []);
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await axios.get(`${API_URL}/logout`, { withCredentials: true });
       localStorage.removeItem('email');
       setIsAuthenticated(false);
-      setEmail('');
+      setUsername('');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -54,8 +54,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const res = await userLogin(formData);
       if (res.status === 200) {
         setIsAuthenticated(true);
-        setEmail(formData.email);
-        localStorage.setItem('email', formData.email);
+        setUsername(formData.username);
+        localStorage.setItem('username', formData.username);
         return true;
       } else {
         return false;
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       value={{
         isAuthenticated,
         setIsAuthenticated,
-        email,
+        username,
         loading,
         logout,
         login,
