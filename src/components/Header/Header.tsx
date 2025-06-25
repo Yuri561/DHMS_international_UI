@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import logo from '../../../public/logo.png';
 import SearchBar from './SearchBar';
 import { User, ShoppingCart } from 'lucide-react';
 import NavigationMenuBeauty from './HeaderLinks';
 import { Link, useNavigate } from 'react-router-dom';
-import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+// import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { useAuth } from '../Context/AuthContext';
 import { useCart } from '../Context/CartContext'; // 
 
 const Header = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const { isAuthenticated, setIsAuthenticated, logout } = useAuth();
   const { cartQuantity } = useCart(); // 
   const navigate = useNavigate();
@@ -26,22 +26,22 @@ const Header = () => {
   }, [setIsAuthenticated]);
 
   const handleLogout = async () => {
-    setLoading(true);
+    // setLoading(true);
     await logout();
     navigate('/login');
-    setLoading(false);
+    // setLoading(false);
   };
 
-  const handleOnClick = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1800);
-  };
+  // const handleOnClick = () => {
+  //   setLoading(true);
+  //   setTimeout(() => setLoading(false), 1800);
+  // };
 
   return (
     <>
-      {loading && <LoadingAnimation />}
       <div className='w-full bg-black fixed top-0 left-0 right-0 shadow-md px-8 z-50'>
         <div className='p-4 flex flex-col items-center space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0'>
+      {/* {loading && <LoadingAnimation />} */}
           {/* Logo Section */}
           <div className='flex items-center space-x-2'>
             <img src={logo} alt='Logo' className='w-10 h-10 rounded-full p-1 mr-2' />
@@ -61,7 +61,7 @@ const Header = () => {
           {/* Icons Section */}
           <div className='flex items-center space-x-4 text-white'>
             {/* Cart */}
-            <Link to='/cart' onClick={handleOnClick} className='flex flex-col items-center hover:scale-105 relative'>
+            <Link to='/cart' className='flex flex-col items-center hover:scale-105 relative'>
               <ShoppingCart />
               <span className='text-[#f3cb50]'>My Cart</span>
 
@@ -80,7 +80,7 @@ const Header = () => {
                 <span className='text-[#f3cb50]'>Sign Out</span>
               </button>
             ) : (
-              <Link to='/login#top' onClick={handleOnClick} className='flex flex-col items-center hover:scale-105'>
+              <Link to='/login#top' className='flex flex-col items-center hover:scale-105'>
                 <User />
                 <span className='text-[#f3cb50]'>Sign In</span>
               </Link>

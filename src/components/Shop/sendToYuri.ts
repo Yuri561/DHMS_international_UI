@@ -8,7 +8,7 @@ const sendToYuri = async () => {
 
     //try block for better error handling
     try {
-      await axios.post('http://localhost:8080/products', ProductsDb, {
+      await axios.post('https://dhms-backend.onrender.com/products', ProductsDb, {
        headers: {
         'Content-Type': "application/json"
        },

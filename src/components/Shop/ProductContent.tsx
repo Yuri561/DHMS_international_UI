@@ -3,17 +3,22 @@ import { fetchProducts } from '../AuthFolder/AuthFiles';
 import { useCart } from '../Context/CartContext';
 
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
-
 import ProductGrid from './ProductGrid';
 import PaginationControls from './PaginationControls';
 import ProductModal from './ProductModal';
+import ProductFilters from './ProductFilter';
 
 interface ProductProps {
-  selectedCategory: string[];
+    selectedCategory: string[];
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
   selectedBrand: string[];
+  setSelectedBrand: React.Dispatch<React.SetStateAction<string[]>>;
   selectRating: number;
+  setSelectRating: React.Dispatch<React.SetStateAction<number>>;
   priceRange: number;
+  setPriceRange: React.Dispatch<React.SetStateAction<number>>;
   availabilityFilter: string[];
+  setAvailabilityFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setIsDesktopOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isDesktopOpen: boolean;
 }
@@ -33,20 +38,25 @@ interface Product {
 
 const ProductContent: React.FC<ProductProps> = ({
   selectedCategory,
+  setSelectedCategory,
   selectedBrand,
+  setSelectedBrand,
   selectRating,
+  setSelectRating,
   priceRange,
-  availabilityFilter
+  setPriceRange,
+  availabilityFilter,
+  setAvailabilityFilter,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [productsDb, setProductsDb] = useState<Product[]>([]);
   const [loadingAnimation, setLoadingAnimation] = useState(false);
   const [error, setError] = useState('');
-
   const itemsPerPage = 10;
+
   const { addToCart } = useCart();
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem('username');
 
   // Fetch products
   useEffect(() => {
@@ -70,18 +80,21 @@ const ProductContent: React.FC<ProductProps> = ({
     fetchData();
   }, []);
 
-  // Reset to page 1 on filter change
+  // Reset pagination on filter change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, selectedBrand, selectRating, priceRange, availabilityFilter]);
 
-  // Filter logic
+  // Filtering logic
   const filteredProducts = productsDb.filter((product) => {
     const isCategoryMatch = selectedCategory.length === 0 || selectedCategory.includes(product.category);
     const isBrandMatch = selectedBrand.length === 0 || selectedBrand.includes(product.brand);
     const isRatingMatch = selectRating === 0 || product.rating >= selectRating;
     const isPriceMatch = typeof product.price === 'number' && product.price <= priceRange;
-    const isAvailabilityMatch = availabilityFilter.length === 0 || availabilityFilter.includes(product.inStore ? 'In Stock' : 'Online');
+    const isAvailabilityMatch =
+      availabilityFilter.length === 0 ||
+      availabilityFilter.includes(product.inStore ? 'In Stock' : 'Online');
+
     return isCategoryMatch && isBrandMatch && isRatingMatch && isPriceMatch && isAvailabilityMatch;
   });
 
@@ -91,20 +104,34 @@ const ProductContent: React.FC<ProductProps> = ({
     currentPage * itemsPerPage
   );
 
-  // Modal open/close
-  const openModal = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const closeModal = () => {
-    setSelectedProduct(null);
-  };
+  const openModal = (product: Product) => setSelectedProduct(product);
+  const closeModal = () => setSelectedProduct(null);
 
   return (
-    <div className="bg-black px-4 md:px-10 py-10 text-white">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+    <div className="bg-[#fdf9f3] px-4 md:px-10 py-12 text-[#2f2a28] min-h-screen font-raleway">
       {loadingAnimation && <LoadingAnimation />}
-      <h1 className="text-3xl font-semibold text-yellow-500 text-center mb-6">Shop Your Care</h1>
+      {error && <p className="text-red-600 font-medium text-center">{error}</p>}
+
+      <h1 className="text-4xl font-bold text-[#d5a86b] text-center mb-10">Shop Your Care</h1>
+
+      {!loadingAnimation && filteredProducts.length === 0 && (
+        <p className="text-center text-gray-500 mb-12">
+          No products match your filters. Try adjusting the categories or price range.
+        </p>
+      )}
+      <ProductFilters
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        selectedBrand={selectedBrand}
+        setSelectedBrand={setSelectedBrand}
+        selectRating={selectRating}
+        setSelectRating={setSelectRating}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        availabilityFilter={availabilityFilter}
+        setAvailabilityFilter={setAvailabilityFilter}
+        />
+
 
       <ProductGrid products={paginatedProducts} onProductClick={openModal} />
 
@@ -119,7 +146,7 @@ const ProductContent: React.FC<ProductProps> = ({
           product={selectedProduct}
           onClose={closeModal}
           onAddToCart={addToCart}
-          username={typeof username === "string" ? username : undefined}
+          username={typeof username === 'string' ? username : undefined}
         />
       )}
     </div>
