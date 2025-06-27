@@ -104,13 +104,13 @@ const InStore: React.FC = () => {
 
       {/* Footer */}
       <div className="relative z-10 mt-20 text-center max-w-2xl mx-auto">
-        <p className="text-md sm:text-lg text-[#7d726a]">
+        <p className="text-lg sm:text-lg text-[#7d726a]">
           Feel the fabrics. Smell the scents. Find your fit.
         </p>
-        <p className="text-sm text-[#a19990] mt-2">
+        <p className="text-lg text-[#a19990] mt-2">
           Walk-ins welcome • Pickup hours: Mon–Sat, 10am – 6pm
         </p>
-        <p className="text-sm text-[#a19990] mt-1">
+        <p className="text-lg text-[#a19990] mt-2">
           Visit us at our Spotsylvania Mall location.
         </p>
       </div>
