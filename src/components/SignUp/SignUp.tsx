@@ -62,7 +62,7 @@ const SignUp: React.FC = () => {
       const response = await userRegister(data);
       if (response.status === 201) {
         localStorage.setItem('user', JSON.stringify(response.data));
-        navigate('/login');
+        navigate('/dashboard');
       }
     } catch (error) {
       console.error('Error during registration:', error);

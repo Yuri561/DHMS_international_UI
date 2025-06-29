@@ -52,7 +52,7 @@ const SignIn: React.FC = () => {
       }
     } catch (err: any) {
       console.log('Error occurred:', err);
-      setError(err?.message || 'Sigin failed');
+      setError(err?.message || 'Signin failed');
     }
     finally{
         setLoading(false);
