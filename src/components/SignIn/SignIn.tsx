@@ -2,24 +2,26 @@ import React, { useState } from 'react';
 import signinpng from '../../assets/signin1.jpg';
 import { useForm } from 'react-hook-form';
 import { userLogin } from '../AuthFolder/AuthFiles';
-import { Mail } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { useAuth } from '../Context/AuthContext';
 import { useCart } from '../Context/CartContext';
+import { GoogleLogin } from '@react-oauth/google';
 
-
+import axios from 'axios';
 interface FormData {
-    username: string;
-    password: string;
-    
+  username: string;
+  password: string;
+
 }
 
 const SignIn: React.FC = () => {
-  const {fetchCart} = useCart()
+  const { fetchCart } = useCart()
+  const {fetchSession} = useAuth()
   const [loading, setLoading] = useState<boolean>(false);
+  // const [forgotPassword, setForgotPassword] = useState<boolean>(false);
 
-  const {setIsAuthenticated} = useAuth();
+  const { setIsAuthenticated } = useAuth();
 
   const {
     register,
@@ -28,15 +30,14 @@ const SignIn: React.FC = () => {
   } = useForm<FormData>();
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
-//   const handleLoginSuccess = async () => {
-//   // After storing email/token in localStorage:
-//   const response = await axios.get('/cart', { withCredentials: true });
-//   dispatch(fetchCart(response.data.items)); // Custom Redux action
-// };
+
+  // const onForgotPwdClick = async ()=>{
+  //   setError('')
+  //   setForgotPassword(true);
+  // }
   const onSubmit = async (data: FormData) => {
     setError('');
     setLoading(true);
-    
     try {
       const response = await userLogin(data);
       if (response.status === 200) {
@@ -52,17 +53,21 @@ const SignIn: React.FC = () => {
       }
     } catch (err: any) {
       console.log('Error occurred:', err);
+<<<<<<< HEAD
       setError(err?.message || 'Signin failed');
+=======
+      setError(err?.message || 'Sign in failed');
+>>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
     }
-    finally{
-        setLoading(false);
+    finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className=" relative flex flex-col md:flex-row gap-4 p-4 min-h-screen mt-5 bg-transparent pt-36 md:pt-28 lg:pt-24">
 
-        {loading && <LoadingAnimation/>}
+      {loading && <LoadingAnimation />}
       {/* Background Video */}
       <video
         autoPlay
@@ -71,7 +76,7 @@ const SignIn: React.FC = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-[-1] blur-sm brightness-30"
       >
-        <source src='../../../public/videos/signin.MP4' type="video/mp4" />
+        <source src="/videos/signin.MP4" type="video/mp4" />
       </video>
 
       {/* Overlay Content */}
@@ -99,6 +104,15 @@ const SignIn: React.FC = () => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm text-center space-y-4">
                 <div className="text-left flex flex-col space-y-6 text-lg font-semibold text-[#f3cb50] mb-2">
+                  {/* {forgotPassword && ( 
+                    <input
+                    {...register('username', { required: 'Username is required!' })}
+                    type="name"
+                    placeholder="Enter Username"
+                    className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  />
+                  
+                  )} */}
                   <input
                     {...register('username', { required: 'Username is required!' })}
                     type="name"
@@ -112,12 +126,12 @@ const SignIn: React.FC = () => {
                     type="password"
                     placeholder="Password"
                     className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  />
+                    />
                   {errors.password && (
                     <p className="text-red-500 text-sm">{errors.password.message}</p>
                   )}
 
-            
+
 
                   {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -125,25 +139,41 @@ const SignIn: React.FC = () => {
                     type="submit"
                     disabled={loading}
                     className="w-full py-3 cursor-pointer bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-600 transition duration-200"
-                  >
+                    >
                     {loading ? "Signing In" : "Sign in"}
                   </button>
 
                   <div className="flex gap-4 justify-center text-sm text-gray-400">
-                    <p className="hover:underline cursor-pointer">Forgot password?</p>
+                    <button className="hover:underline cursor-pointer">Forgot password?</button>
                     <Link to="/register" className="hover:underline cursor-pointer">
                       Create an account
                     </Link>
                   </div>
 
                   <div className="flex items-center justify-center space-x-2 text-gray-400">
-                    <Mail className="w-6 h-6 text-yellow-500" />
-                    <button
-                      type="button"
-                      className="p-2 bg-yellow-500 cursor-pointer text-black font-semibold rounded-lg hover:bg-yellow-600 transition duration-200"
-                    >
-                      Sign in with Google
-                    </button>
+                    <GoogleLogin
+                      onSuccess={async (credentialResponse) => {
+                        const { credential } = credentialResponse;
+
+                          try {
+                            const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google`, {credential
+                            }, { withCredentials: true });
+
+                            localStorage.setItem('username', res.data.username);
+                            console.log(res.data.user.username) // debugging only
+                            setIsAuthenticated(true);
+                            await fetchCart();
+                            await fetchSession();
+                            navigate('/dashboard');
+                          } catch (err) {
+                            console.error('Google login failed', err);
+                          }
+            
+                      }}
+                      onError={() => {
+                        console.error('Login Failed');
+                      }}
+                    />
                   </div>
                 </div>
               </form>

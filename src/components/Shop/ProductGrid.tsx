@@ -19,7 +19,7 @@ interface ProductGridProps {
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, onProductClick }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-hidden">
       {products.map((product) => (
         <div
           key={product.id}
@@ -30,13 +30,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onProductClick }) =
             <img
               src={product.imageUrl}
               alt={product.name}
-              className="w-full h-100 object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full  h-96 object-cover transition-transform duration-300 group-hover:scale-105"
             />
 
-            <div className="absolute inset-0 bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+            <div className="absolute inset-0 bg-white/10 h-100 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
               <button
                 onClick={() => onProductClick(product)}
-                className="bg-[#d5a86b] text-white px-4 py-2 rounded-full hover:brightness-110 transition"
+                className="bg-[#d5a86b]  cursor-pointer text-white px-4 py-2 rounded-full hover:brightness-110 transition"
               >
                 Quick View
               </button>

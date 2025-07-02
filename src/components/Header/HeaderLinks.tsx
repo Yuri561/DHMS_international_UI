@@ -1,5 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
-import OffsetLink from '@/components/Handler/OffsetLink';
+import { Link } from 'react-router-dom';
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -9,6 +8,7 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { useAuth } from '../Context/AuthContext';
+<<<<<<< HEAD
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { useState, useEffect } from 'react';
 
@@ -28,10 +28,23 @@ export default function NavigationMenuBeauty() {
   const handleClick = () => {
     setLoadingAnimation(true);
   };
+=======
+import OffsetLink from '../Handler/OffsetLink';
+// import { useState } from 'react';
+
+
+export default function NavigationMenuBeauty() {
+  const { isAuthenticated } = useAuth();
+  function handleClick(_event: any): void {
+    throw new Error('Function not implemented.');
+  }
+
+  //  const [loadingAnimation, setLoadingAnimation] = useState<boolean>(false);
+>>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
 
   return (
     <NavigationMenu>
-      {loadingAnimation && <LoadingAnimation />}
+
       <NavigationMenuList className="text-white text-xs">
 
         {/* Home */}
@@ -39,7 +52,11 @@ export default function NavigationMenuBeauty() {
           <NavigationMenuLink asChild>
             <OffsetLink
               to="/home#top"
+<<<<<<< HEAD
               onClick={handleClick}
+=======
+
+>>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
               className="hover:bg-[#f3cb50] rounded-full px-3 py-1 transition"
             >
               Home
@@ -55,18 +72,18 @@ export default function NavigationMenuBeauty() {
           <NavigationMenuContent className=" bg-[#d5a86b] text-white">
             <ul className="grid gap-2 p-2 w-48">
               {[
-                { to: '/categories/handbags', label: 'Handbags' },
-                { to: '/categories/kente shirts', label: 'Men Shirts' },
-                { to: '/categories/kaftan', label: 'Women Dresses' },
-                { to: '/categories/body oil', label: 'Body Products' },
-              ].map((item) => (
+                { to: '/shop#top', label: 'Handbag' },
+                { to: '/shop#top', label: 'Men Shirts' },
+                { to: '/shop#top', label: 'Women Dresses' },
+                { to: '/shop#top', label: 'Body Products' },
+              ].map(({ to, label }) => (
                 <li
-                  key={item.to}
+                  key={label}
                   className="rounded-full px-3 py-1  transition"
                 >
                   <NavigationMenuLink asChild>
-                    <Link to={item.to} onClick={handleClick}>
-                      {item.label}
+                    <Link to={to}  state={{ category: label }}>
+                      {label}
                     </Link>
                   </NavigationMenuLink>
                 </li>
@@ -80,7 +97,10 @@ export default function NavigationMenuBeauty() {
           <NavigationMenuLink asChild>
             <OffsetLink
               to="/shop#top"
+<<<<<<< HEAD
               onClick={handleClick}
+=======
+>>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
               className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
             >
               Shop

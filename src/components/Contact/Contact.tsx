@@ -56,7 +56,7 @@ const Contact = () => {
                 playsInline
                 className="absolute top-0 left-0 w-full h-full object-cover z-[-1] blur-sm brightness-30"
             >
-                <source src='../../../public/videos/signin.MP4' type="video/mp4" />
+                <source src="/videos/signin.MP4" type="video/mp4" />
             </video>
             <div className="max-w-2xl w-full bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] p-8 rounded-2xl shadow-2xl border border-[#f3cb50]/30 backdrop-blur-md">
                 <h2 className="text-4xl font-bold text-center mb-8 text-[#f3cb50] font-[satisfy]">

@@ -1,6 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import { createContext, useContext,  useState } from 'react';
+// import axios from 'axios';
 import {toast} from 'react-hot-toast'
+import api from '../setUpAxios';
+import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const CartContext = createContext<any>(null);
@@ -11,7 +13,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchCart = async () => {
         try {
-            const res = await axios.get(`${API_URL}/cart`, { withCredentials: true });
+            const res = await api.get(`${API_URL}/cart`, { withCredentials: true });
             setCart(res.data.cart);
             
         } catch (err) {
@@ -34,7 +36,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const addToCart = async (product: Product) => {
         try {
-            await axios.post(
+            await api.post(
                 `${API_URL}/cart/add`,
                 {
                     productId: product.id,
@@ -58,9 +60,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     };
     const cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
+
     const removeFromCart = async (itemId: any) => {
         try {
-            await axios.delete(
+            await api.delete(
                 `${API_URL}/cart/remove/${itemId}`, {
                 withCredentials: true
             }
@@ -82,14 +85,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             console.error("error updating item", err)
         }
     }
-
-
-    useEffect(() => {
-        fetchCart();
-    }, []);
+    // clear cart on logout 
+    const clearCart = async ()=> {
+        setCart([])
+    }
+// this was causing it 
+    // useEffect(() => {
+    //     fetchCart();
+    // }, []);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, cartQuantity, removeFromCart, fetchCart, updateQty }}>
+        <CartContext.Provider value={{ cart, clearCart, addToCart, cartQuantity, removeFromCart, fetchCart, updateQty }}>
             {children}
         </CartContext.Provider>
     );

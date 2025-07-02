@@ -1,4 +1,4 @@
-import {  useEffect } from 'react';
+
 import logo from '../../../public/logo.png';
 import SearchBar from './SearchBar';
 import { User, ShoppingCart } from 'lucide-react';
@@ -10,24 +10,26 @@ import { useCart } from '../Context/CartContext'; //
 
 const Header = () => {
   // const [loading, setLoading] = useState<boolean>(false);
-  const { isAuthenticated, setIsAuthenticated, logout } = useAuth();
-  const { cartQuantity } = useCart(); // 
+  const { isAuthenticated, logout } = useAuth();
+  const { cartQuantity, clearCart } = useCart(); // 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = () => {
-      const username = localStorage.getItem('username');
-      setIsAuthenticated(!!username);
-    };
+  // useEffect(() => {
+  //   const checkAuth = () => {
+  //     const username = localStorage.getItem('username');
+  //     setIsAuthenticated(!!username);
+  //   };
 
-    checkAuth();
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
-  }, [setIsAuthenticated]);
+  //   checkAuth();
+  //   window.addEventListener('storage', checkAuth);
+  //   return () => window.removeEventListener('storage', checkAuth);
+  // }, [setIsAuthenticated]);
 
   const handleLogout = async () => {
     // setLoading(true);
     await logout();
+    await clearCart()
+    window.location.reload();
     navigate('/login');
     // setLoading(false);
   };

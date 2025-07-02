@@ -2,9 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { userRegister } from '../AuthFolder/AuthFiles';
-import { Eye, EyeOff, Mail } from 'lucide-react';
-import signupng from '../../assets/signup.jpg'
+import { Eye, EyeOff } from 'lucide-react';
+import signupng from '../../assets/signup.jpg';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { useAuth } from '../Context/AuthContext';
+import { useCart } from '../Context/CartContext';
 interface FormData {
   email: string;
   password: string;
@@ -14,6 +20,8 @@ interface FormData {
 }
 
 const SignUp: React.FC = () => {
+  const { setIsAuthenticated } = useAuth();
+  const { fetchCart } = useCart();
   const {
     register,
     handleSubmit,
@@ -25,9 +33,9 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const password = watch('password');
-
 
   const passwordStrength = useMemo(() => {
     if (!password) return { label: '', color: '' };
@@ -48,13 +56,12 @@ const SignUp: React.FC = () => {
     }
   }, [password]);
 
-  const [loading, setLoading] = useState<boolean>(false);
-
   const onSubmit = async (data: FormData) => {
     setError('');
     setLoading(true);
     if (data.password !== data.confirmPassword) {
       setError('Passwords do not match');
+      setLoading(false);
       return;
     }
 
@@ -66,15 +73,17 @@ const SignUp: React.FC = () => {
       }
     } catch (error) {
       console.error('Error during registration:', error);
-    }
-    finally{
-        setLoading(false);
+      setError('Registration failed. Try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row gap-4 p-4 min-h-screen mt-5 bg-transparent pt-36 md:pt-28 lg:pt-24">
-        {loading && <LoadingAnimation/>}
+    <div className="relative flex flex-col md:flex-row gap-4 p-4 min-h-screen pt-36 md:pt-28 lg:pt-24 bg-transparent">
+      {loading && <LoadingAnimation />}
+
+      {/*  Background Video */}
       <video
         autoPlay
         loop
@@ -82,17 +91,22 @@ const SignUp: React.FC = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-[-1] blur-sm brightness-30"
       >
-        <source src='../../../public/videos/signin.MP4' type="video/mp4" />
+        <source src="/videos/signin.MP4" type="video/mp4" />
       </video>
 
+      {/* Overlay Content */}
       <div className="relative flex items-center justify-center min-h-screen w-full mt-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-transparent backdrop-blur rounded-lg shadow-lg w-full max-w-6xl p-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-white">
+            {/* Left Side */}
             <div className="flex flex-col justify-center items-center mt-6 md:mt-0 text-center space-y-4">
-              <h1 className="text-5xl font-[satisfy] text-[#f3cb50]">Your journey starts here</h1>
-             
-            </div> <img src={signupng} alt="Sign up" className="w-80 rounded-md mx-auto shadow-lg object-contain mb-6" />
+              <h1 className="text-5xl font-[satisfy] text-[#f3cb50]">
+                Your journey starts here
+              </h1>
+              <img src={signupng} alt="Sign up" className="w-80 rounded-md mx-auto shadow-lg object-contain mb-6" />
+            </div>
 
+            {/* Right Side - Form */}
             <div className="flex flex-col justify-center items-center space-y-4">
               <h2 className="text-2xl sm:text-4xl font-extrabold text-[#f3cb50]">Become a member</h2>
               <p className="text-lg text-white">The journey to DHMS starts here!</p>
@@ -100,11 +114,12 @@ const SignUp: React.FC = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm text-center space-y-4">
                 <div className="text-left flex flex-col space-y-6 text-lg font-semibold text-[#f3cb50] mb-2">
                   <input
-                    {...register('username', { required: 'username is required!' })}
-                    type="name"
-                    placeholder="username"
+                    {...register('username', { required: 'Username is required!' })}
+                    type="text"
+                    placeholder="Username"
                     className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   />
+
                   <input
                     {...register('email', { required: 'Email is required!' })}
                     type="email"
@@ -137,7 +152,7 @@ const SignUp: React.FC = () => {
                     <input
                       {...register('confirmPassword', {
                         required: 'Confirm your password!',
-                        validate: (val) => val === watch('password') || 'Passwords do not match',
+                        validate: (val) => val === password || 'Passwords do not match',
                       })}
                       type={showConfirm ? 'text' : 'password'}
                       placeholder="Confirm Password"
@@ -153,7 +168,6 @@ const SignUp: React.FC = () => {
                   </div>
                   {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
 
-                  
                   {error && <p className="text-red-500 text-sm">{error}</p>}
 
                   <button
@@ -169,17 +183,38 @@ const SignUp: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-center space-x-2 text-gray-400">
-                    <Mail className="w-6 h-6 text-yellow-500" />
-                    <button
-                      type="button"
-                      className="p-2 bg-yellow-500 cursor-pointer text-black font-semibold rounded-lg hover:bg-yellow-600 transition duration-200"
-                    >
-                      Sign in with Google
-                    </button>
+                    <GoogleLogin
+                      onSuccess={async (credentialResponse) => {
+                        const { credential } = credentialResponse;
+                        if (credential) {
+                          const decoded: any = jwtDecode(credential);
+                          const { email, name, sub: googleId } = decoded;
+
+                          try {
+                            await axios.post(`${import.meta.env.VITE_API_URL}/auth/google`, {
+                              email,
+                              name,
+                              googleId,
+                            }, { withCredentials: true });
+
+                            localStorage.setItem('username', name);
+                            setIsAuthenticated(true);
+                            await fetchCart();
+                            navigate('/dashboard');
+                          } catch (err) {
+                            console.error('Google login failed', err);
+                          }
+                        }
+                      }}
+                      onError={() => {
+                        console.error('Login Failed');
+                      }}
+                    />
                   </div>
                 </div>
               </form>
             </div>
+
           </div>
         </div>
       </div>

@@ -7,9 +7,9 @@ const Highlights: React.FC = () => {
       className="bg-[#fdf9f3] text-[#2f2a28] px-6 py-16 flex flex-col items-center max-w-8xl font-play"
     >
       {/* Hero Heading */}
-      <div className="text-center mb-12 max-w-3xl">
-        <h2 className="text-4xl sm:text-5xl font-extrabold font-play leading-tight tracking-tight text-[#d5a86b]">
-          DHMS — Africa at Your Fingertips
+      <div className="flex flex-col justify-center items-center text-center mb-12 max-w-4xl">
+        <h2 className="text-5xl sm:text-8xl font-[raleway] font-bold text-[#d5a86b] text-wrap sm:text-nowrap">
+          Africa at Your Fingertips
         </h2>
         <p className="text-base sm:text-lg mt-4 font-medium text-[#7d726a]">
           Rooted in tradition. Elevated for today. Explore handpicked African beauty, wellness, and fashion — crafted to celebrate your glow, your roots, and your rhythm.

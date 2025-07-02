@@ -43,8 +43,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const handleAddToCart = () => {
     if (!username) {
-      alert('Please sign in to add items to cart');
+      setLoading(true)
+      navigate('/login#top')
+      toast.error('Please sign in to add items to cart');
+      setLoading(false)
       return;
+
+
     }
 
     onAddToCart({
@@ -104,7 +109,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
           <button
             onClick={handleAddToCart}
-            className="mt-6 bg-[#c9372c] text-white font-bold py-2 rounded hover:bg-[#aa2f24] transition"
+            className="mt-6 bg-[#c9372c] text-white  cursor-pointer hover:scale-105 active:scale-105font-bold py-2 rounded hover:bg-[#aa2f24] transition"
           >
             ADD TO CART
           </button>

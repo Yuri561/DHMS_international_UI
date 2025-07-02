@@ -36,6 +36,7 @@ export const ProductsDb = [
     inStore: true,
     description: "Elevate your everyday look with this stylish bucket shoulder bag, designed in a timeless tan and brown color palette."
   },
+  
   {
     id: 4,
     name: "Black Animal Print",
@@ -733,4 +734,3 @@ export const ProductsDb = [
 
 
 ];
-

@@ -1,60 +1,72 @@
 import React from 'react';
-import bodyOil from '/body.jpg';
-import Bonnet from '/bonnet.jpg';
-import Clothes from '/clothingWomen.jpeg';
-import Jewelry from '../../assets/jewelry.png'; 
+import bodyOil from '/body.png';
+import Bonnet from '/Kente bag.png';
+import Clothes from '/purple-kaftan.jpg';
+import Men from '/zigzag-shirt.jpg';
+import { Link } from 'react-router-dom';
+
 const categories = [
   {
-    title: 'Clothing',
+    title: "Women Dresses",
     image: Clothes,
   },
   {
-    title: 'Hair Care',
+    title: 'Handbang',
     image: Bonnet,
   },
   {
-    title: 'Body Care',
+    title: 'Body Products',
     image: bodyOil,
   },
   {
-    title: 'Jewelry',
-    image: Jewelry,
+    title: "Men Shirts",
+    image: Men,
   },
 ];
 
 const BannerRevamp: React.FC = () => {
   return (
-    <div className="relative bg-[#fdf9f3] text-[#2f2a28] flex flex-col justify-center items-center p-8 font-raleway">
+    <section className="relative bg-[#fdf9f3] text-[#2f2a28] py-20 px-6 font-raleway">
       {/* Heading */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#d5a86b]">Explore Our Categories</h1>
-        <p className="text-md text-[#7d726a] mt-2">
-          Curated collections inspired by African beauty, wellness, and tradition.
+      <div className="text-center mb-20 max-w-4xl mx-auto">
+        <h1 className="text-5xl sm:text-7xl text-wrap md:text-nowrap sm:text-nowrap font-[satisfy] text-[#d5a86b] leading-tight drop-shadow-lg">
+          Explore Our Signature Collections
+        </h1>
+        <p className="text-lg text-[#7d726a] mt-4 font-light tracking-wide">
+          Curated with care — luxury meets heritage in every piece.
         </p>
       </div>
 
-      {/* Category Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 max-w-7xl w-full px-4">
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 max-w-7xl mx-auto">
         {categories.map(({ title, image }, i) => (
-          <div key={i} className="flex flex-col items-center">
-            <h2 className="font-[satisfy] text-2xl text-[#2f2a28] mb-4">{title}</h2>
-            <div className="relative group w-72 h-[400px] rounded-xl shadow-md overflow-hidden">
+          <div
+            key={i}
+            className="flex flex-col items-center group hover:scale-[1.02] transition-transform duration-500"
+          >
+            <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[550px] rounded-2xl shadow-xl overflow-hidden">
               <img
                 src={image}
                 alt={title}
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full h-full object-cover rounded-2xl"
               />
-              <div className="absolute inset-0 bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center px-4">
-                <h3 className="text-xl text-[#2f2a28] font-bold drop-shadow mb-2">{title}</h3>
-                <button className="mt-2 px-4 py-2 text-sm cursor-pointer text-white border border-white rounded-full hover:bg-white/20 transition">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-sm flex flex-col items-center justify-end p-6">
+                <Link
+                  to="/shop"
+                  state={{ category: title }}
+                  className="mt-4 px-6 py-2 text-sm tracking-wide uppercase text-white border border-white rounded-full hover:bg-white/20 transition duration-300"
+                >
                   View More
-                </button>
+                </Link>
               </div>
             </div>
+            <h2 className="mt-6 text-2xl font-semibold font-[satisfy] text-[#2f2a28] tracking-wider">
+              {title}
+            </h2>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

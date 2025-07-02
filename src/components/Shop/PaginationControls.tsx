@@ -22,11 +22,13 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   const handlePrevious = (e: React.MouseEvent) => {
     e.preventDefault();
     if (currentPage > 1) onPageChange(currentPage - 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
     if (currentPage < totalPages) onPageChange(currentPage + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -45,6 +47,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
                 onClick={(e) => {
                   e.preventDefault();
                   onPageChange(index + 1);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
                 {index + 1}

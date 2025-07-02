@@ -1,6 +1,6 @@
-// this file will contain all the files related to the AuthFolder
 
-import axios from 'axios';
+// this file will contain all the files related to the AuthFolder
+import axios from 'axios'
 // we import axios to make HTTP requests
 
 // This file contains all the auth-related API functions
