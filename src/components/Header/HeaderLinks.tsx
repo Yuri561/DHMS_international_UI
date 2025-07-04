@@ -8,27 +8,6 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { useAuth } from '../Context/AuthContext';
-<<<<<<< HEAD
-import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
-import { useState, useEffect } from 'react';
-
-export default function NavigationMenuBeauty() {
-  const { isAuthenticated } = useAuth(); 
-  const [loadingAnimation, setLoadingAnimation] = useState(false);
-  const location = useLocation();
-
-  // Stop animation when route changes
-  useEffect(() => {
-    if (loadingAnimation) {
-      const timeout = setTimeout(() => setLoadingAnimation(false), 800); // Delay to let animation play
-      return () => clearTimeout(timeout);
-    }
-  }, [location]);
-
-  const handleClick = () => {
-    setLoadingAnimation(true);
-  };
-=======
 import OffsetLink from '../Handler/OffsetLink';
 // import { useState } from 'react';
 
@@ -40,7 +19,6 @@ export default function NavigationMenuBeauty() {
   }
 
   //  const [loadingAnimation, setLoadingAnimation] = useState<boolean>(false);
->>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
 
   return (
     <NavigationMenu>
@@ -52,11 +30,6 @@ export default function NavigationMenuBeauty() {
           <NavigationMenuLink asChild>
             <OffsetLink
               to="/home#top"
-<<<<<<< HEAD
-              onClick={handleClick}
-=======
-
->>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
               className="hover:bg-[#f3cb50] rounded-full px-3 py-1 transition"
             >
               Home
@@ -97,10 +70,6 @@ export default function NavigationMenuBeauty() {
           <NavigationMenuLink asChild>
             <OffsetLink
               to="/shop#top"
-<<<<<<< HEAD
-              onClick={handleClick}
-=======
->>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
               className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
             >
               Shop

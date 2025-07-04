@@ -5,13 +5,13 @@ import './index.css';
 import App from './App.tsx';
 import { CartProvider } from './components/Context/CartContext.tsx';
 import { AuthProvider } from './components/Context/AuthContext.tsx';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+// import { GoogleOAuthProvider } from '@react-oauth/google';
 
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+// const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={clientId}>
+    {/* <GoogleOAuthProvider clientId={clientId}> */}
       <BrowserRouter>
         <CartProvider>
           <AuthProvider>
@@ -19,6 +19,6 @@ createRoot(document.getElementById('root')!).render(
           </AuthProvider>
         </CartProvider>
       </BrowserRouter>
-    </GoogleOAuthProvider>
+    {/* </GoogleOAuthProvider> */}
   </StrictMode>,
 );

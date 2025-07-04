@@ -6,11 +6,11 @@ import { Eye, EyeOff } from 'lucide-react';
 import signupng from '../../assets/signup.jpg';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
-import { useAuth } from '../Context/AuthContext';
-import { useCart } from '../Context/CartContext';
+// import { GoogleLogin } from '@react-oauth/google';
+// import { jwtDecode } from 'jwt-decode';
+// import axios from 'axios';
+// import { useAuth } from '../Context/AuthContext';
+// import { useCart } from '../Context/CartContext';
 interface FormData {
   email: string;
   password: string;
@@ -20,8 +20,8 @@ interface FormData {
 }
 
 const SignUp: React.FC = () => {
-  const { setIsAuthenticated } = useAuth();
-  const { fetchCart } = useCart();
+  // const { setIsAuthenticated } = useAuth();
+  // const { fetchCart } = useCart();
   const {
     register,
     handleSubmit,
@@ -182,7 +182,7 @@ const SignUp: React.FC = () => {
                     <Link to="/login" className="hover:underline cursor-pointer">Sign in instead?</Link>
                   </div>
 
-                  <div className="flex items-center justify-center space-x-2 text-gray-400">
+                  {/* <div className="flex items-center justify-center space-x-2 text-gray-400">
                     <GoogleLogin
                       onSuccess={async (credentialResponse) => {
                         const { credential } = credentialResponse;
@@ -210,7 +210,7 @@ const SignUp: React.FC = () => {
                         console.error('Login Failed');
                       }}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </form>
             </div>

@@ -17,7 +17,7 @@ interface FormData {
 
 const SignIn: React.FC = () => {
   const { fetchCart } = useCart()
-  const {fetchSession} = useAuth()
+  // const {fetchSession} = useAuth()
   const [loading, setLoading] = useState<boolean>(false);
   // const [forgotPassword, setForgotPassword] = useState<boolean>(false);
 
@@ -53,11 +53,7 @@ const SignIn: React.FC = () => {
       }
     } catch (err: any) {
       console.log('Error occurred:', err);
-<<<<<<< HEAD
-      setError(err?.message || 'Signin failed');
-=======
       setError(err?.message || 'Sign in failed');
->>>>>>> 2085afe29721d2fac0b820fad941fcf175e73781
     }
     finally {
       setLoading(false);
@@ -150,7 +146,7 @@ const SignIn: React.FC = () => {
                     </Link>
                   </div>
 
-                  <div className="flex items-center justify-center space-x-2 text-gray-400">
+                  {/* <div className="flex items-center justify-center space-x-2 text-gray-400">
                     <GoogleLogin
                       onSuccess={async (credentialResponse) => {
                         const { credential } = credentialResponse;
@@ -163,7 +159,7 @@ const SignIn: React.FC = () => {
                             console.log(res.data.user.username) // debugging only
                             setIsAuthenticated(true);
                             await fetchCart();
-                            await fetchSession();
+                            // await fetchSession();
                             navigate('/dashboard');
                           } catch (err) {
                             console.error('Google login failed', err);
@@ -174,7 +170,7 @@ const SignIn: React.FC = () => {
                         console.error('Login Failed');
                       }}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </form>
             </div>
