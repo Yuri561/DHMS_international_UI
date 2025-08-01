@@ -782,7 +782,7 @@ export const ProductsDb = [
    {
     id: 58, 
     name: "Amora Royal Heart Set",
-    price: 70.00,
+    price: 65.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/heart-shaped-necklace.jpg",
@@ -806,7 +806,7 @@ export const ProductsDb = [
     {
     id: 59, 
     name: "Golden Willow Necklace",
-    price: 65.00,
+    price: 70.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/leaf-necklace.jpg",
@@ -818,7 +818,7 @@ export const ProductsDb = [
    {
     id: 60, 
     name: "Athena Geometric Jewelry Set – Gold & Black",
-    price: 65.00,
+    price: 50.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/rose-gold-necklace.jpg",
@@ -830,7 +830,7 @@ export const ProductsDb = [
    {
     id: 61, 
     name: "Solara Multicolor Gold Jewelry Set",
-    price: 65.00,
+    price: 60.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/gold-colored-necklace.jpg",
@@ -842,7 +842,7 @@ export const ProductsDb = [
    {
     id: 62, 
     name: "Oceana Jewelry Set",
-    price: 65.00,
+    price: 80.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/shells-necklace.jpg",
@@ -854,7 +854,7 @@ export const ProductsDb = [
    {
     id: 63, 
     name: "Luna Bloom Silver Floral Jewelry Set",
-    price: 65.00,
+    price: 60.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/silver-flower-necklace.jpg",
@@ -878,7 +878,7 @@ export const ProductsDb = [
    {
     id: 65, 
     name: "Versa Gold Jewelry Set",
-    price: 65.00,
+    price: 60.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/designer-necklace.jpg",
@@ -887,11 +887,11 @@ export const ProductsDb = [
     inStore: true,
     description: "This 4-piece gold jewelry collection showcases an elegant Greek key motif etched into each piece with precision."
   },
-// left off here add more
+//  more
   {
     id: 66, 
     name: "Celestia Wings Jewelry Set",
-    price: 65.00,
+    price: 60.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/gold-necklace.jpg",
@@ -903,7 +903,7 @@ export const ProductsDb = [
    {
     id: 67, 
     name: "Noire Jewelry Set",
-    price: 65.00,
+    price: 60.00,
     category: "Jewlery",
     brand: "DHMS",
     imageUrl: "/black-diamond-gold-necklace.jpg",
@@ -915,7 +915,7 @@ export const ProductsDb = [
     {
     id: 67, 
     name: "Ankut Anklet",
-    price: 65.00,
+    price: 15.00,
     category: "Jewelry",
     brand: "DHMS",
     imageUrl: "/crown-heart-anklet.jpg",
@@ -927,7 +927,7 @@ export const ProductsDb = [
   {
     id: 68, 
     name: "Anima Gold Hair Growth Oil",
-    price: 65.00,
+    price: 15.00,
     category: "Hair",
     brand: "Anima Gold",
     imageUrl: "/hair-growth.jpg",
@@ -939,7 +939,7 @@ export const ProductsDb = [
    {
     id: 69, 
     name: "Batana Hair Pomade",
-    price: 65.00,
+    price: 15.00,
     category: "Hair",
     brand: "Mine Botanicals",
     imageUrl: "/batana-hair-pomade.jpg",
@@ -951,7 +951,7 @@ export const ProductsDb = [
    {
     id: 70, 
     name: "Batana Oil",
-    price: 65.00,
+    price: 10.00,
     category: "Hair",
     brand: "Mine Botanicals",
     imageUrl: "/batana-oil.jpg",
