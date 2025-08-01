@@ -6,9 +6,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { useAuth } from '../Context/AuthContext';
 import { useCart } from '../Context/CartContext';
-import { GoogleLogin } from '@react-oauth/google';
-
-import axios from 'axios';
+// import { GoogleLogin } from '@react-oauth/google';
+import { toast } from 'react-hot-toast';
+// import axios from 'axios';
 interface FormData {
   username: string;
   password: string;
@@ -16,12 +16,12 @@ interface FormData {
 }
 
 const SignIn: React.FC = () => {
-  const { fetchCart } = useCart()
+  const {fetchCart} = useCart()
   // const {fetchSession} = useAuth()
   const [loading, setLoading] = useState<boolean>(false);
   // const [forgotPassword, setForgotPassword] = useState<boolean>(false);
 
-  const { setIsAuthenticated } = useAuth();
+  const {setIsAuthenticated} = useAuth();
 
   const {
     register,
@@ -39,21 +39,29 @@ const SignIn: React.FC = () => {
     setError('');
     setLoading(true);
     try {
-      const response = await userLogin(data);
+      const response = await userLogin({
+  username: data.username.trim(),
+  password: data.password.trim(),
+  data
+});
       if (response.status === 200) {
-        const user = response.data;
+        const user = response.data.username;
         // for debugging purposes 
-        console.log('here is the response')
+        console.log('here is the response', user)
         setIsAuthenticated(true);
-        localStorage.setItem('username', user.username);
+        localStorage.setItem('username', response.data.username);
         await fetchCart();
         navigate('/dashboard');
+
       } else {
+        toast.error("There was an issue signing in please check credentials")
         setError('Unable to sign in');
+        
       }
     } catch (err: any) {
       console.log('Error occurred:', err);
       setError(err?.message || 'Sign in failed');
+      toast.error("Sign in error please try again")
     }
     finally {
       setLoading(false);
@@ -156,7 +164,7 @@ const SignIn: React.FC = () => {
                             }, { withCredentials: true });
 
                             localStorage.setItem('username', res.data.username);
-                            console.log(res.data.user.username) // debugging only
+                            console.log('user:',res.data.user.username) // debugging only
                             setIsAuthenticated(true);
                             await fetchCart();
                             // await fetchSession();

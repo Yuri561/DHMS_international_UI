@@ -34,14 +34,10 @@ const Header = () => {
     // setLoading(false);
   };
 
-  // const handleOnClick = () => {
-  //   setLoading(true);
-  //   setTimeout(() => setLoading(false), 1800);
-  // };
 
   return (
     <>
-      <div className='w-full bg-black fixed top-0 left-0 right-0 shadow-md px-8 z-50'>
+      <div className=' w-full bg-black fixed top-0 left-0 right-0 shadow-md px-8 z-50'>
         <div className='p-4 flex flex-col items-center space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0'>
       {/* {loading && <LoadingAnimation />} */}
           {/* Logo Section */}
@@ -82,7 +78,7 @@ const Header = () => {
                 <span className='text-[#f3cb50]'>Sign Out</span>
               </button>
             ) : (
-              <Link to='/login#top' className='flex flex-col items-center hover:scale-105'>
+              <Link to='/login' className='flex flex-col items-center hover:scale-105'>
                 <User />
                 <span className='text-[#f3cb50]'>Sign In</span>
               </Link>

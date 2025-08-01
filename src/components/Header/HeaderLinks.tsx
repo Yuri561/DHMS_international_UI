@@ -1,35 +1,26 @@
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
+  // NavigationMenuTrigger,
+  // NavigationMenuContent,
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { useAuth } from '../Context/AuthContext';
 import OffsetLink from '../Handler/OffsetLink';
-// import { useState } from 'react';
-
 
 export default function NavigationMenuBeauty() {
   const { isAuthenticated } = useAuth();
-  function handleClick(_event: any): void {
-    throw new Error('Function not implemented.');
-  }
-
-  //  const [loadingAnimation, setLoadingAnimation] = useState<boolean>(false);
 
   return (
     <NavigationMenu>
-
-      <NavigationMenuList className="text-white text-xs">
-
+      <NavigationMenuList className="text-[#333333] text-lg space-x-8">
         {/* Home */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <OffsetLink
-              to="/home#top"
+              to="/home"
               className="hover:bg-[#f3cb50] rounded-full px-3 py-1 transition"
             >
               Home
@@ -37,25 +28,22 @@ export default function NavigationMenuBeauty() {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Categories Dropdown */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="rounded-full px-3 py-1 bg-[#d5a86b] transition">
+        {/* Categories Dropdown (opens upward) */}
+        {/* <NavigationMenuItem className="relative"> */}
+          {/* <NavigationMenuTrigger className="rounded-full px-3 py-1 bg-[#d5a86b] transition">
             Categories
           </NavigationMenuTrigger>
-          <NavigationMenuContent className=" bg-[#d5a86b] text-white">
-            <ul className="grid gap-2 p-2 w-48">
+          <NavigationMenuContent className="absolute bottom-full mb-2 bg-[#d5a86b] text-white rounded-lg shadow-md w-48">
+            <ul className="grid gap-2 p-2">
               {[
-                { to: '/shop#top', label: 'Handbag' },
-                { to: '/shop#top', label: 'Men Shirts' },
-                { to: '/shop#top', label: 'Women Dresses' },
-                { to: '/shop#top', label: 'Body Products' },
+                { to: '/shop', label: 'Handbag' },
+                { to: '/shop', label: 'Men Shirts' },
+                { to: '/shop', label: 'Women Dresses' },
+                { to: '/shop', label: 'Body Products' },
               ].map(({ to, label }) => (
-                <li
-                  key={label}
-                  className="rounded-full px-3 py-1  transition"
-                >
+                <li key={label} className="rounded-full px-3 py-1 transition hover:bg-[#f3cb50]">
                   <NavigationMenuLink asChild>
-                    <Link to={to}  state={{ category: label }}>
+                    <Link to={to} state={{ category: label }}>
                       {label}
                     </Link>
                   </NavigationMenuLink>
@@ -63,7 +51,7 @@ export default function NavigationMenuBeauty() {
               ))}
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* Shop */}
         <NavigationMenuItem>
@@ -81,8 +69,7 @@ export default function NavigationMenuBeauty() {
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <OffsetLink
-              to="/contact#top"
-              onClick={handleClick}
+              to="/contact"
               className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
             >
               Contact
@@ -90,13 +77,12 @@ export default function NavigationMenuBeauty() {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Dashboard (if authenticated) */}
+        {/* Dashboard */}
         {isAuthenticated && (
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
               <OffsetLink
-                to="/dashboard#top"
-                onClick={handleClick}
+                to="/dashboard"
                 className="rounded-full px-3 py-1 hover:bg-[#f3cb50] transition"
               >
                 Dashboard
@@ -104,7 +90,6 @@ export default function NavigationMenuBeauty() {
             </NavigationMenuLink>
           </NavigationMenuItem>
         )}
-
       </NavigationMenuList>
     </NavigationMenu>
   );

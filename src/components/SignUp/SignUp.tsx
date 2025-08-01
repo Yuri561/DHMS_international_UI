@@ -6,11 +6,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import signupng from '../../assets/signup.jpg';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 
-// import { GoogleLogin } from '@react-oauth/google';
-// import { jwtDecode } from 'jwt-decode';
-// import axios from 'axios';
-// import { useAuth } from '../Context/AuthContext';
-// import { useCart } from '../Context/CartContext';
+import { useAuth } from '../Context/AuthContext';
+
 interface FormData {
   email: string;
   password: string;
@@ -20,8 +17,8 @@ interface FormData {
 }
 
 const SignUp: React.FC = () => {
-  // const { setIsAuthenticated } = useAuth();
-  // const { fetchCart } = useCart();
+  const { setIsAuthenticated } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -69,6 +66,8 @@ const SignUp: React.FC = () => {
       const response = await userRegister(data);
       if (response.status === 201) {
         localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem('username', response.data.username);
+        setIsAuthenticated(true);
         navigate('/dashboard');
       }
     } catch (error) {
@@ -182,35 +181,7 @@ const SignUp: React.FC = () => {
                     <Link to="/login" className="hover:underline cursor-pointer">Sign in instead?</Link>
                   </div>
 
-                  {/* <div className="flex items-center justify-center space-x-2 text-gray-400">
-                    <GoogleLogin
-                      onSuccess={async (credentialResponse) => {
-                        const { credential } = credentialResponse;
-                        if (credential) {
-                          const decoded: any = jwtDecode(credential);
-                          const { email, name, sub: googleId } = decoded;
-
-                          try {
-                            await axios.post(`${import.meta.env.VITE_API_URL}/auth/google`, {
-                              email,
-                              name,
-                              googleId,
-                            }, { withCredentials: true });
-
-                            localStorage.setItem('username', name);
-                            setIsAuthenticated(true);
-                            await fetchCart();
-                            navigate('/dashboard');
-                          } catch (err) {
-                            console.error('Google login failed', err);
-                          }
-                        }
-                      }}
-                      onError={() => {
-                        console.error('Login Failed');
-                      }}
-                    />
-                  </div> */}
+                 
                 </div>
               </form>
             </div>

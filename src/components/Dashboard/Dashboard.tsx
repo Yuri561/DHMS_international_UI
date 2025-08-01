@@ -4,7 +4,7 @@ import {
   LogOut,
   User,
   ShoppingBag,
-  Heart,
+  // Heart,
   LayoutDashboard,
   ShoppingCart,
   BadgePercent,
@@ -20,6 +20,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     await logout();
+    localStorage.removeItem('username')
     navigate('/login');
   };
 
@@ -27,16 +28,16 @@ const Dashboard = () => {
     <div className="flex flex-col md:flex-row min-h-screen bg-[#fdf9f3]">
       
       {/* Sidebar */}
-      <aside className="w-full md:w-72 bg-gradient-to-b from-black to-gray-900 text-white p-6 shadow-xl">
+      <aside className="w-full md:w-72 bg-gradient-to-b from-black to-gray-900 mt-4 text-white p-6 shadow-xl">
         <div className="mb-12 mt-10 text-center md:text-left">
           <h1 className="text-3xl font-bold text-[#f3cb50]">DHMS Dashboard</h1>
           <p className="text-sm text-gray-300">Signed in as <span className="text-[#f3cb50]">{username}</span></p>
         </div>
 
         <nav className="space-y-5">
-          <Link to="overview" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
+          <Link to="/home#top" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
             <LayoutDashboard size={18} />
-            Overview
+            Home
           </Link>
           <Link to="/shop#top" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
             <ShoppingCart size={18} />
@@ -46,9 +47,9 @@ const Dashboard = () => {
             <ShoppingBag size={18} />
             Order History
           </Link>
-          <Link to="wishlist" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
-            <Heart size={18} />
-            Wishlist
+          <Link to="/cart#top" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
+            <ShoppingCart size={18} />
+            My Cart
           </Link>
           <Link to="rewards" className="flex items-center gap-2 hover:text-black hover:bg-white px-4 py-2 rounded-md transition">
             <Star size={18} />

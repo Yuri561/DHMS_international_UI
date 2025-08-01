@@ -2,7 +2,7 @@ import React from 'react';
 import { scrollWithOffset } from '@/scrollHelpers/ScrollOffset';
 import { HashLink } from 'react-router-hash-link';
 import { useLocation } from 'react-router-dom';
-import clsx from 'clsx'; // Optional, for clean class merging
+import clsx from 'clsx'; 
 
 interface OffsetLinkProps {
   to: string;
@@ -20,7 +20,7 @@ const OffsetLink: React.FC<OffsetLinkProps> = ({ to, children, className }) => {
 
   const combinedClassName = clsx(
     className,
-    isActive && 'bg-white text-black font-semibold shadow-md'
+    isActive && 'bg-white text-black text-lg font-semibold shadow-md'
   );
 
   return (

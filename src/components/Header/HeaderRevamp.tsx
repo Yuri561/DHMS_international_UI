@@ -6,12 +6,12 @@ import NavigationMenuBeauty from './HeaderLinks';
 import { Link, useNavigate } from 'react-router-dom';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { useAuth } from '../Context/AuthContext';
-import { useCart } from '../Context/CartContext'; // 
+import { useCart } from '../Context/CartContext';
 
 const HeaderRevamp = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { isAuthenticated, setIsAuthenticated, logout } = useAuth();
-  const { cartQuantity } = useCart(); // 
+  const { cartQuantity } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +19,6 @@ const HeaderRevamp = () => {
       const username = localStorage.getItem('username');
       setIsAuthenticated(!!username);
     };
-
     checkAuth();
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
@@ -40,58 +39,61 @@ const HeaderRevamp = () => {
   return (
     <>
       {loading && <LoadingAnimation />}
-      <div className='w-full bg-[#d5a86b] backdrop-blur-sm blur-[0.5px] fixed top-0 left-0 right-0 shadow-md px-8 z-50'>
-        <div className='p-4 flex flex-col items-center space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0'>
-          {/* Logo Section */}
+
+      {/* Compact Top Header */}
+      <div className='w-full bg-[#d5a86b] fixed top-0 left-0 right-0 shadow-md px-4 py-2 z-50'>
+        <div className='flex flex-col md:flex-row items-center justify-between gap-2'>
+
+          {/* Logo */}
           <div className='flex items-center space-x-2'>
-            <img src={logo} alt='Logo' className='w-10 h-10 rounded-full p-1 mr-2' />
-            <div className='flex flex-col items-start'>
-              <span className='text-[#f3cb50] text-xl font-[satisfy]'>DHMS</span>
-              <span className='text-[#f3eae2] text-sm uppercase font-bold'>
+            <img src={logo} alt='Logo' className='w-8 h-8 rounded-full p-1' />
+            <div className='leading-tight'>
+              <span className='text-[#f3cb50] text-lg font-[satisfy]'>DHMS</span>
+              <span className='block text-[#f3eae2] text-xs uppercase font-bold'>
                 International Limit
               </span>
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className='w-full md:w-150 flex justify-center'>
+          {/* Search */}
+          <div className='w-full md:w-96'>
             <SearchBar />
           </div>
 
-          {/* Icons Section */}
-          <div className='flex items-center space-x-4 text-white'>
-            {/* Cart */}
-            <Link to='/cart' onClick={handleOnClick} className='flex flex-col items-center hover:scale-105 relative'>
-              <ShoppingCart />
-              <span className='text-[#f3cb50]'>My Cart</span>
-
-             <span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1'>
-  {cartQuantity}
-</span>
+          {/* Cart & Auth */}
+          <div className='flex items-center gap-8 text-white'>
+            <Link
+              to='/cart'
+              onClick={handleOnClick}
+              className='relative flex flex-col items-center hover:scale-105'
+            >
+              <ShoppingCart className='w-10 h-10' />
+              <span className='text-sm text-[#f3cb50]'>Cart</span>
+              {cartQuantity > 0 && (
+                <span className='absolute -top-1 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full px-1'>
+                  {cartQuantity}
+                </span>
+              )}
             </Link>
 
-            {/* Auth */}
             {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className='flex flex-col items-center cursor-pointer hover:scale-105'
-              >
-                <User />
-                <span className='text-[#f3cb50]'>Sign Out</span>
+              <button onClick={handleLogout} className='flex flex-col items-center hover:scale-105'>
+                <User className='w-10 h-10' />
+                <span className='text-sm text-[#f3cb50]'>Sign Out</span>
               </button>
             ) : (
-              <Link to='/login#top' onClick={handleOnClick} className='flex flex-col items-center hover:scale-105'>
-                <User />
-                <span className='text-[#f3cb50]'>Sign In</span>
+              <Link to='/login' onClick={handleOnClick} className='flex flex-col items-center hover:scale-105'>
+                <User className='w-10 h-10' />
+                <span className='text-sm text-[#f3cb50]'>Sign In</span>
               </Link>
             )}
           </div>
         </div>
+      </div>
 
-        {/* Navigation Links */}
-        <div className='w-full flex justify-center pb-4'>
-          <NavigationMenuBeauty />
-        </div>
+      {/* Sticky Bottom Navigation */}
+      <div className='fixed  bg-[#2f4f4f] flex justify-center items-center  bottom-0 left-0 right-0  bg-[#d5a86b] shadow-t z-50 px-5 py-2 md:py-3'>
+        <NavigationMenuBeauty />
       </div>
     </>
   );

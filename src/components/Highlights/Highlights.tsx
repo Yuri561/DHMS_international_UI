@@ -1,61 +1,102 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
+import { motion } from 'framer-motion';
+import { useScroll } from '../Context/ScrollProvider';
+const features = [
+  {
+    icon: '🌿',
+    title: 'Authentic African Heritage',
+    description:
+      'From shea butter to kaftan craftsmanship — every product tells a story rooted in Africa. Celebrate the beauty of culture in every item.',
+  },
+  {
+    icon: '👗',
+    title: 'Stylish Afro-Fashion',
+    description:
+      'Shop stunning kaftans, boubous, and signature pieces. Unapologetically bold. Exceptionally comfortable. Designed to stand out.',
+  },
+  {
+    icon: '💸',
+    title: 'Fair Prices, Unmatched Value',
+    description:
+      'High-quality, handcrafted goods without the boutique markup. We believe cultural pride should be affordable.',
+  },
+  {
+    icon: '🚚',
+    title: 'Fast & Secure Delivery',
+    description:
+      'Your style, delivered. We prioritize fast, reliable shipping so you can rock your roots with no delay.',
+  },
+  {
+    icon: '🛍️',
+    title: 'Curated With Care',
+    description:
+      'Everything is handpicked with intention. From textures to tones, each product aligns with our values of quality and identity.',
+  },
+  {
+    icon: '🌍',
+    title: 'Afro-Diaspora Powered',
+    description:
+      'We are proudly Black-owned and committed to uplifting African and Caribbean artisans, designers, and storytellers.',
+  },
+];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 const Highlights: React.FC = () => {
+  const ref = useRef<HTMLElement>(null);
+  const {registerSection} = useScroll();
+
+  useEffect(()=>{
+    registerSection(ref)
+  },[])
   return (
-    <div
+    <section
+      ref={ref}
       id="Highlights"
-      className="bg-[#fdf9f3] text-[#2f2a28] px-6 py-16 flex flex-col items-center max-w-8xl font-play"
+      className="bg-[#fdf9f3] text-[#2f2a28] px-6 py-24 flex flex-col items-center max-w-8xl font-play"
     >
-      {/* Hero Heading */}
-      <div className="flex flex-col justify-center items-center text-center mb-12 max-w-4xl">
-        <h2 className="text-5xl sm:text-8xl font-[raleway] font-bold text-[#d5a86b] text-wrap sm:text-nowrap">
+      {/* Title */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="text-center mb-20 max-w-4xl"
+      >
+        <h2 className="text-5xl sm:text-7xl font-[satisfy] text-[#d5a86b] leading-tight drop-shadow-lg">
           Africa at Your Fingertips
         </h2>
-        <p className="text-base sm:text-lg mt-4 font-medium text-[#7d726a]">
+        <p className="mt-4 text-base sm:text-lg text-[#7d726a]">
           Rooted in tradition. Elevated for today. Explore handpicked African beauty, wellness, and fashion — crafted to celebrate your glow, your roots, and your rhythm.
         </p>
-      </div>
+      </motion.div>
 
-      {/* Feature Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
-        {[
-          {
-            title: '🌿 Authentic African Heritage',
-            text: 'From shea butter to kaftan craftsmanship — every product tells a story. We highlight beauty and tradition across the African diaspora.',
-          },
-          {
-            title: '👗 Stylish Afro-Fashion',
-            text: 'Shop beautifully tailored kaftans, boubous, and cultural wear — designed for both men and women who love bold elegance and comfort.',
-          },
-          {
-            title: '💸 Fair Prices, Unmatched Value',
-            text: 'Beauty and fashion should be accessible. Enjoy luxurious products and statement pieces without the high markups.',
-          },
-          {
-            title: '🚚 Lightning-Fast Delivery',
-            text: 'From self-care kits to elegant garments — everything ships quickly and securely to your door, ready to wear or share.',
-          },
-          {
-            title: '🛍️ Curated With Care',
-            text: 'Every item in our collection is hand-selected to meet our standard of excellence — blending quality, culture, and confidence.',
-          },
-          {
-            title: '🌎 Afro-Diaspora Powered',
-            text: "We're a proud Black-owned brand uplifting African and Caribbean creators, artisans, and tailors through every sale.",
-          },
-        ].map((feature, i) => (
-          <div
+      {/* Feature Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-7xl">
+        {features.map((feature, i) => (
+          <motion.div
             key={i}
-            className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition duration-300"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="group bg-white rounded-2xl p-8 shadow hover:shadow-xl hover:scale-[1.02] transition duration-300 text-center"
           >
+            <div className="text-4xl mb-4">{feature.icon}</div>
             <h3 className="text-xl font-semibold text-[#2f2a28] font-raleway">
               {feature.title}
             </h3>
-            <p className="mt-3 text-[#7d726a] text-sm">{feature.text}</p>
-          </div>
+            <p className="mt-3 text-sm text-[#7d726a]">
+              {feature.description}
+            </p>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

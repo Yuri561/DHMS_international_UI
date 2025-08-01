@@ -9,14 +9,14 @@ import ProductModal from './ProductModal';
 import ProductFilters from './ProductFilter';
 
 interface ProductProps {
-    selectedCategory: string[];
+  selectedCategory: string[];
   setSelectedCategory: React.Dispatch<React.SetStateAction<string[]>>;
   selectedBrand: string[];
   setSelectedBrand: React.Dispatch<React.SetStateAction<string[]>>;
   selectRating: number;
   setSelectRating: React.Dispatch<React.SetStateAction<number>>;
-  priceRange: number;
-  setPriceRange: React.Dispatch<React.SetStateAction<number>>;
+  order: string;
+  setOrder: React.Dispatch<React.SetStateAction<string>>;
   availabilityFilter: string[];
   setAvailabilityFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setIsDesktopOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,8 +43,8 @@ const ProductContent: React.FC<ProductProps> = ({
   setSelectedBrand,
   selectRating,
   setSelectRating,
-  priceRange,
-  setPriceRange,
+  order,
+  setOrder,
   availabilityFilter,
   setAvailabilityFilter,
 }) => {
@@ -83,23 +83,48 @@ const ProductContent: React.FC<ProductProps> = ({
   // Reset pagination on filter change
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategory, selectedBrand, selectRating, priceRange, availabilityFilter]);
+  }, [
+    selectedCategory,
+    selectedBrand,
+    selectRating,
+    order,
+    availabilityFilter,
+  ]);
 
-  // Filtering logic
+  // Filtering logic (without price range)
   const filteredProducts = productsDb.filter((product) => {
-    const isCategoryMatch = selectedCategory.length === 0 || selectedCategory.includes(product.category);
-    const isBrandMatch = selectedBrand.length === 0 || selectedBrand.includes(product.brand);
+    const isCategoryMatch =
+      selectedCategory.length === 0 || selectedCategory.includes(product.category);
+
+    const isBrandMatch =
+      selectedBrand.length === 0 || selectedBrand.includes(product.brand);
+
     const isRatingMatch = selectRating === 0 || product.rating >= selectRating;
-    const isPriceMatch = typeof product.price === 'number' && product.price <= priceRange;
+
     const isAvailabilityMatch =
       availabilityFilter.length === 0 ||
       availabilityFilter.includes(product.inStore ? 'In Stock' : 'Online');
 
-    return isCategoryMatch && isBrandMatch && isRatingMatch && isPriceMatch && isAvailabilityMatch;
+    return (
+      isCategoryMatch &&
+      isBrandMatch &&
+      isRatingMatch &&
+      isAvailabilityMatch
+    );
+  });
+
+  // Sort products by price
+  const sortProducts = [...filteredProducts].sort((a, b) => {
+    const priceA = typeof a.price === 'number' ? a.price : 0;
+    const priceB = typeof b.price === 'number' ? b.price : 0;
+
+    if (order === 'Price: Low to High') return priceA - priceB;
+    if (order === 'Price: High to Low') return priceB - priceA;
+    return 0;
   });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const paginatedProducts = filteredProducts.slice(
+  const paginatedProducts = sortProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -112,13 +137,16 @@ const ProductContent: React.FC<ProductProps> = ({
       {loadingAnimation && <LoadingAnimation />}
       {error && <p className="text-red-600 font-medium text-center">{error}</p>}
 
-      <h1 className="text-4xl font-bold text-[#d5a86b] text-center mb-10">Shop Your Care</h1>
+      <h1 className="text-6xl md:text-8xl text-center font-[satisfy] text-[#2f2a28] mb-6">
+        Shop Your Care
+      </h1>
 
       {!loadingAnimation && filteredProducts.length === 0 && (
         <p className="text-center text-gray-500 mb-12">
-          No products match your filters. Try adjusting the categories or price range.
+          No products match your filters. Try adjusting the categories or sort order.
         </p>
       )}
+
       <ProductFilters
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
@@ -126,12 +154,11 @@ const ProductContent: React.FC<ProductProps> = ({
         setSelectedBrand={setSelectedBrand}
         selectRating={selectRating}
         setSelectRating={setSelectRating}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
+        order={order}
+        setOrder={setOrder}
         availabilityFilter={availabilityFilter}
         setAvailabilityFilter={setAvailabilityFilter}
-        />
-
+      />
 
       <ProductGrid products={paginatedProducts} onProductClick={openModal} />
 

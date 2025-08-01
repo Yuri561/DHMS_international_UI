@@ -10,17 +10,7 @@ const CartContext = createContext<any>(null);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [cart, setCart] = useState<any[]>([]);
-
-    const fetchCart = async () => {
-        try {
-            const res = await api.get(`${API_URL}/cart`, { withCredentials: true });
-            setCart(res.data.cart);
-            
-        } catch (err) {
-            console.error('Fetch cart failed', err);
-        }
-    };
-
+    
     type Product = {
         id: number;
         name: string;
@@ -33,7 +23,16 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         quantity: number;
         totalPrice: number;
     };
-
+    
+    const fetchCart = async () => {
+        try {
+            const res = await axios.get(`${API_URL}/cart`, { withCredentials: true });
+            setCart(res.data.cart);
+            
+        } catch (err) {
+            console.error('Fetch cart failed', err);
+        }
+    };
     const addToCart = async (product: Product) => {
         try {
             await api.post(
@@ -80,7 +79,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
             ${API_URL}/cart/update/${itemId}`,
                 { quantity: qty },
                 { withCredentials: true })
-            }
+        }
         catch (err) {
             console.error("error updating item", err)
         }

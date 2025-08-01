@@ -32,3 +32,12 @@ export const fetchProducts = async ()=> {
   
 })
 }
+
+// reset password 
+
+export const resetPassword = async (email:string) => {
+  return axios.post(`${API_URL}/reset-password`, 
+    {email},
+    {headers: {'Content-Type': "application/json"}}
+  )
+}

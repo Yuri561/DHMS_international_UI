@@ -1,5 +1,9 @@
 import React from 'react';
-import { CategoryTypes, BrandTypes } from './Sidebar/BrandTypes';
+import { CategoryTypes } from './Sidebar/BrandTypes';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "../ui/toggle-group"
 
 interface Props {
   selectedCategory: string[];
@@ -8,8 +12,8 @@ interface Props {
   setSelectedBrand: React.Dispatch<React.SetStateAction<string[]>>;
   selectRating: number;
   setSelectRating: React.Dispatch<React.SetStateAction<number>>;
-  priceRange: number;
-  setPriceRange: React.Dispatch<React.SetStateAction<number>>;
+  order: string;
+  setOrder: React.Dispatch<React.SetStateAction<string>>;
   availabilityFilter: string[];
   setAvailabilityFilter: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -17,19 +21,17 @@ interface Props {
 const ProductFilters: React.FC<Props> = ({
   selectedCategory,
   setSelectedCategory,
-  selectedBrand,
-  setSelectedBrand,
   selectRating,
   setSelectRating,
-  priceRange,
-  setPriceRange,
+  order,
+  setOrder,
   availabilityFilter,
   setAvailabilityFilter
 }) => {
   return (
-    <div className="flex flex-wrap gap-6 mb-10 items-center justify-center bg-[#fffaf5] p-4 rounded-xl shadow">
-      {/* Categories */}
-      <div className="space-y-1">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-6 mb-10 p-4 items-start sm:items-center justify-center rounded-2xl border border-gray-100 shadow-2xl">
+      {/* Category Filter */}
+      <div className="w-full sm:w-auto flex flex-col items-start space-y-2">
         <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Category</h4>
         <div className="flex flex-wrap gap-2">
           {CategoryTypes.map((cat) => (
@@ -52,32 +54,8 @@ const ProductFilters: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Brands */}
-      <div className="space-y-1">
-        <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Brand</h4>
-        <div className="flex flex-wrap gap-2">
-          {BrandTypes.map((brand) => (
-            <button
-              key={brand}
-              className={`px-3 py-1 text-sm rounded-full border ${
-                selectedBrand.includes(brand)
-                  ? 'bg-[#d5a86b] text-white'
-                  : 'border-[#d5a86b] text-[#2f2a28]'
-              }`}
-              onClick={() =>
-                setSelectedBrand((prev) =>
-                  prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
-                )
-              }
-            >
-              {brand}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Rating */}
-      <div className="space-y-1">
+      {/* Rating Filter */}
+      <div className="w-full sm:w-auto flex flex-col items-start space-y-2">
         <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Rating</h4>
         <div className="flex gap-1">
           {[5, 4, 3, 2].map((stars) => (
@@ -94,25 +72,28 @@ const ProductFilters: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Price Slider */}
-      <div className="space-y-1">
-        <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Price</h4>
-        <div className="flex flex-col items-start">
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={priceRange}
-            onChange={(e) => setPriceRange(parseFloat(e.target.value))}
-            className="w-40"
-          />
-          <span className="text-xs text-gray-500">${priceRange.toFixed(2)}</span>
-        </div>
+      {/* Sort Order */}
+      <div className="w-full sm:w-auto flex flex-col items-start space-y-2">
+        <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Sort</h4>
+        <ToggleGroup
+          variant="outline"
+          type="single"
+          value={order}
+          onValueChange={(val) => {
+            if (val) setOrder(val);
+          }}
+        >
+          <ToggleGroupItem value="Price: Low to High">
+            <span className="px-2 inline">Low to High</span>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="Price: High to Low">
+            <span className="px-2 inline">High to Low</span>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
       {/* Availability */}
-      <div className="space-y-1">
+      <div className="w-full sm:w-auto flex flex-col items-start space-y-2">
         <h4 className="text-xs font-bold text-[#d5a86b] uppercase">Availability</h4>
         <div className="flex flex-wrap gap-2">
           {['In Stock', 'Out of Stock', 'In Store Only'].map((status) => (
@@ -125,7 +106,9 @@ const ProductFilters: React.FC<Props> = ({
               }`}
               onClick={() =>
                 setAvailabilityFilter((prev) =>
-                  prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]
+                  prev.includes(status)
+                    ? prev.filter((s) => s !== status)
+                    : [...prev, status]
                 )
               }
             >

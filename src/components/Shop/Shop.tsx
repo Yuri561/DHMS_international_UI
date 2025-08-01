@@ -1,43 +1,47 @@
-import React, { useEffect } from 'react'
-import ProductContent from './ProductContent'
-import { useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import ProductContent from './ProductContent';
+import { useLocation } from 'react-router-dom';
 
 const Shop: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = React.useState<string[]>([])
-  const [selectedBrand, setSelectedBrand] = React.useState<string[]>([])
-  const [selectRating, setSelectRating] = React.useState<number>(0)
-  const [priceRange, setPriceRange] = React.useState<number>(30.00)
-  const [availabilityFilter, setAvailabilityFilter] = React.useState<string[]>([])
-   const [isDesktopOpen, setIsDesktopOpen] = React.useState(true);
-   const location = useLocation()
-   const categoryFromHeader = location.state?.category;
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<string[]>([]);
+  const [selectRating, setSelectRating] = useState<number>(0);
+  const [order, setOrder] = useState<string>('Price: High to Low'); // default sort
+  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+  const [isDesktopOpen, setIsDesktopOpen] = useState(true);
 
-   useEffect(()=> {
-    if (categoryFromHeader){
-      setSelectedCategory([categoryFromHeader])
+  const location = useLocation();
+  const categoryFromHeader = location.state?.category;
+
+  useEffect(() => {
+    if (categoryFromHeader) {
+      setSelectedCategory([categoryFromHeader]);
     }
-   }, [categoryFromHeader])
+  }, [categoryFromHeader]);
+
   return (
-    <section id='shop' className="p-4 min-h-screen mt-12 overflow-hidden bg-[#fdf9f3] pt-36 md:pt-28 lg:pt-24">
-      {/* Main content */}
-      <div className="flex-1 p-4">
+    <section
+      id="shop"
+      className="p-2 min-h-screen mt-2 overflow-hidden bg-[#fdf9f3] pt-36 md:pt-28 lg:pt-24"
+    >
+      <div className="flex-1 p-2 cursor-pointer">
         <ProductContent
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-          setSelectedBrand={setSelectedBrand}
           selectedBrand={selectedBrand}
+          setSelectedBrand={setSelectedBrand}
           selectRating={selectRating}
           setSelectRating={setSelectRating}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
+          order={order}
+          setOrder={setOrder}
           availabilityFilter={availabilityFilter}
           setAvailabilityFilter={setAvailabilityFilter}
-          setIsDesktopOpen={setIsDesktopOpen}
           isDesktopOpen={isDesktopOpen}
+          setIsDesktopOpen={setIsDesktopOpen}
         />
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;
