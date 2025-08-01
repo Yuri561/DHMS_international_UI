@@ -30,7 +30,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onProductClick }) =
             <img
               src={product.imageUrl}
               alt={product.name}
-              className="w-full  h-96 object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full  h-92 object-cover transition-transform duration-300 group-hover:scale-105"
             />
 
             <div className="absolute inset-0 bg-white/10 h-100 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
