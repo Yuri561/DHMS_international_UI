@@ -4,7 +4,7 @@
 // we import axios to make HTTP requests
 
 import axios from "axios";
-import api from "../setUpAxios";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 // User login (needs credentials for session cookie)
@@ -19,7 +19,7 @@ export const userRegister = (formData: any) => {
 
 // Fetch all products
 export const fetchProducts = () => {
-  return api.get(`${API_URL}/products`);
+  return axios.get(`${API_URL}/products`);
 };
 
 // Reset password request (no session required; credentials optional)
