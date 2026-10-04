@@ -12,7 +12,7 @@ export default function NavigationMenuBeauty() {
   
   return (
     <NavigationMenu>
-      <NavigationMenuList className="text-[#333333] text-lg space-x-8">
+      <NavigationMenuList className="text-[#fff] text-lg space-x-8">
         {/* Home */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild>

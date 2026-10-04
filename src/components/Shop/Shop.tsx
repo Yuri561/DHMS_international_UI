@@ -1,52 +1,181 @@
-import React, { useEffect, useState } from 'react';
-import ProductContent from './ProductContent';
-import { useLocation } from 'react-router-dom';
 
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import { useLocation } from "react-router-dom";
+
+import ProductContent from "./ProductContent";
+
+// ============================================================
+// DHMS INTERNATIONAL
+// SHOP PAGE
+// ============================================================
+
+type ShopNavigationState = {
+  category?: string;
+} | null;
+
+// ============================================================
+// SHOP COMPONENT
+// ============================================================
 
 const Shop: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedBrand, setSelectedBrand] = useState<string[]>([]);
-  const [selectRating, setSelectRating] = useState<number>(0);
-  const [order, setOrder] = useState<string>('Price: High to Low'); 
-  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
-  const [isDesktopOpen, setIsDesktopOpen] = useState(true);
-  // const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
-  // const [inFlightIds, setInFlightIds] = useState<Set<string>>(new Set());
-
   const location = useLocation();
-  const categoryFromHeader = location.state?.category;
+
+  // ----------------------------------------------------------
+  // CATEGORY FILTER
+  // ----------------------------------------------------------
+
+  const [selectedCategory, setSelectedCategory] =
+    useState<string[]>([]);
+
+  // ----------------------------------------------------------
+  // BRAND FILTER
+  // ----------------------------------------------------------
+
+  const [selectedBrand, setSelectedBrand] =
+    useState<string[]>([]);
+
+  // ----------------------------------------------------------
+  // CUSTOMER RATING
+  // ----------------------------------------------------------
+
+  const [selectRating, setSelectRating] =
+    useState<number>(0);
+
+  // ----------------------------------------------------------
+  // SORT ORDER
+  // ----------------------------------------------------------
+
+  const [order, setOrder] =
+    useState<string>("");
+
+  // ----------------------------------------------------------
+  // AVAILABILITY
+  // ----------------------------------------------------------
+
+  const [
+    availabilityFilter,
+    setAvailabilityFilter,
+  ] = useState<string[]>([]);
+
+  // ----------------------------------------------------------
+  // DESKTOP FILTER STATE
+  // ----------------------------------------------------------
+
+  // Retained for compatibility with your existing
+  // ProductContent props.
+
+  const [
+    isDesktopOpen,
+    setIsDesktopOpen,
+  ] = useState<boolean>(true);
+
+  // ============================================================
+  // CATEGORY NAVIGATION
+  // ============================================================
 
   useEffect(() => {
-    if (categoryFromHeader) {
-      setSelectedCategory([categoryFromHeader]);
+    const navigationState =
+      location.state as ShopNavigationState;
+
+    const category =
+      typeof navigationState?.category === "string"
+        ? navigationState.category.trim()
+        : "";
+
+    // When arriving from the homepage or an
+    // In-Store product category, automatically
+    // select the corresponding shop category.
+
+    if (category) {
+      setSelectedCategory([category]);
+    } else {
+      // When navigating to Shop All, begin
+      // with the full collection.
+
+      setSelectedCategory([]);
     }
-  }, [categoryFromHeader]);
 
+    // Reset the remaining filters when arriving
+    // through a new navigation action.
 
+    setSelectedBrand([]);
+
+    setSelectRating(0);
+
+    setAvailabilityFilter([]);
+
+    setOrder("");
+
+  }, [location.key]);
+
+  // ============================================================
+  // SCROLL POSITION
+  // ============================================================
+
+  useEffect(() => {
+    // Your existing OffsetLink uses /shop#top.
+    // Scroll to the beginning of the shop when
+    // navigating to that anchor.
+
+    if (location.hash === "#top") {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
+    }
+  }, [location.key, location.hash]);
+
+  // ============================================================
+  // RENDER
+  // ============================================================
 
   return (
-    <section
-      id="shop"
-      className="p-2 min-h-screen mt-2 overflow-hidden bg-[#fdf9f3] pt-36 md:pt-28 lg:pt-24"
+    <div
+      id="top"
+      className="
+        relative
+        isolate
+        w-full
+        min-w-0
+        min-h-screen
+        bg-[#F8F5EF]
+        text-[#29211C]
+      "
     >
-      <div className="flex-1 p-2 ">
-        <ProductContent
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedBrand={selectedBrand}
-          setSelectedBrand={setSelectedBrand}
-          selectRating={selectRating}
-          setSelectRating={setSelectRating}
-          order={order}
-          setOrder={setOrder}
-          availabilityFilter={availabilityFilter}
-          setAvailabilityFilter={setAvailabilityFilter}
-          isDesktopOpen={isDesktopOpen}
-          setIsDesktopOpen={setIsDesktopOpen}
-         
-        />
-      </div>
-    </section>
+      {/* ================================================== */}
+      {/* SHOP CONTENT                                      */}
+      {/* ================================================== */}
+
+      <ProductContent
+        // CATEGORY
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+
+        // BRAND
+        selectedBrand={selectedBrand}
+        setSelectedBrand={setSelectedBrand}
+
+        // RATING
+        selectRating={selectRating}
+        setSelectRating={setSelectRating}
+
+        // SORT
+        order={order}
+        setOrder={setOrder}
+
+        // AVAILABILITY
+        availabilityFilter={availabilityFilter}
+        setAvailabilityFilter={setAvailabilityFilter}
+
+        // DESKTOP FILTER STATE
+        isDesktopOpen={isDesktopOpen}
+        setIsDesktopOpen={setIsDesktopOpen}
+      />
+    </div>
   );
 };
 
