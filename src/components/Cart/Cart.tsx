@@ -5,9 +5,10 @@ import React, {
   useState,
 } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import {
+  AlertCircle,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
@@ -46,6 +47,7 @@ import api from "../setUpAxios";
 // ------------------------------------------------------------
 
 type FormData = {
+  email: string;
   name: string;
   homeAddress: string;
   city: string;
@@ -297,6 +299,7 @@ const Cart: React.FC = () => {
     mode: "onTouched",
 
     defaultValues: {
+      email: "",
       name: "",
       homeAddress: "",
       city: "",
@@ -304,6 +307,25 @@ const Cart: React.FC = () => {
       zipCode: "",
     },
   });
+
+  // ----------------------------------------------------------
+  // STRIPE CANCEL BANNER
+  // ----------------------------------------------------------
+  //
+  // Stripe redirects back to `/cart?canceled=1` when the
+  // shopper abandons the hosted checkout. Show a soft notice
+  // so they understand nothing was charged.
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const checkoutCanceled =
+    searchParams.get("canceled") === "1";
+
+  const dismissCancelBanner = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("canceled");
+    setSearchParams(next, { replace: true });
+  };
 
   // ----------------------------------------------------------
   // FETCH CART
@@ -468,69 +490,90 @@ const Cart: React.FC = () => {
       return;
     }
 
-    const invalidItem = cartItems.some(
-      (item) =>
-        getItemPrice(item) <= 0 ||
-        getItemQuantity(item) <= 0 ||
-        getItemQuantity(item) > MAX_QUANTITY
-    );
+    // ----------------------------------------------------
+    // BUILD + FILTER STRIPE LINE ITEMS
+    // ----------------------------------------------------
+    //
+    // Per the backend contract: drop any invalid line items
+    // client-side. The backend will reject the request if
+    // every line item is invalid, so we only need to make
+    // sure what we send is well formed.
 
-    if (invalidItem) {
+    const productLineItems = cartItems
+      .map((item) => {
+        const unitAmount = Math.round(
+          getItemPrice(item) * 100
+        );
+
+        const quantity = getItemQuantity(item);
+
+        if (
+          !Number.isInteger(unitAmount) ||
+          unitAmount < 1 ||
+          !Number.isInteger(quantity) ||
+          quantity < 1 ||
+          quantity > MAX_QUANTITY ||
+          !item.name
+        ) {
+          return null;
+        }
+
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: unitAmount,
+          },
+          quantity,
+        };
+      })
+      .filter(
+        (
+          lineItem
+        ): lineItem is {
+          price_data: {
+            currency: string;
+            product_data: { name: string };
+            unit_amount: number;
+          };
+          quantity: number;
+        } => lineItem !== null
+      );
+
+    if (!productLineItems.length) {
       toast.error(
-        "One or more items have invalid pricing or quantities."
+        "No items in your bag have valid pricing. Please refresh and try again."
       );
 
       return;
     }
 
-    try {
-      // ----------------------------------------------------
-      // BUILD STRIPE LINE ITEMS
-      // ----------------------------------------------------
+    const line_items = [
+      ...productLineItems,
 
-      const line_items = [
-        ...cartItems.map((item) => ({
-          price_data: {
-            currency: "usd",
-
-            product_data: {
-              name: item.name,
-            },
-
-            unit_amount: Math.round(
-              getItemPrice(item) * 100
-            ),
-          },
-
-          quantity:
-            getItemQuantity(item),
-        })),
-
-        // Preserve the delivery fee used by
-        // your existing checkout integration.
-
-        ...(deliveryFee > 0
-          ? [
-              {
-                price_data: {
-                  currency: "usd",
-
-                  product_data: {
-                    name: "Delivery Fee",
-                  },
-
-                  unit_amount:
-                    Math.round(
-                      deliveryFee * 100
-                    ),
+      // Preserve the delivery fee as a line item so the
+      // Stripe receipt itemizes shipping clearly.
+      ...(deliveryFee > 0
+        ? [
+            {
+              price_data: {
+                currency: "usd",
+                product_data: {
+                  name: "Delivery Fee",
                 },
-
-                quantity: 1,
+                unit_amount: Math.round(
+                  deliveryFee * 100
+                ),
               },
-            ]
-          : []),
-      ];
+              quantity: 1,
+            },
+          ]
+        : []),
+    ];
 
+    try {
       // ----------------------------------------------------
       // CREATE CHECKOUT SESSION
       // ----------------------------------------------------
@@ -538,8 +581,12 @@ const Cart: React.FC = () => {
       const response = await api.post(
         "/checkout/create-checkout-session",
         {
-          ...data,
-
+          email: data.email.trim(),
+          name: data.name,
+          homeAddress: data.homeAddress,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
           line_items,
         }
       );
@@ -899,6 +946,92 @@ const Cart: React.FC = () => {
           xl:px-16
         "
       >
+        {/* ================================================== */}
+        {/* STRIPE CANCEL BANNER                              */}
+        {/* ================================================== */}
+
+        {checkoutCanceled && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="
+              mb-10
+              flex
+              items-start
+              gap-4
+              border
+              border-[#E5DBCF]
+              bg-[#FFF8EC]
+              px-5
+              py-5
+              sm:items-center
+              sm:px-6
+            "
+          >
+            <AlertCircle
+              size={22}
+              strokeWidth={1.5}
+              className="
+                mt-0.5
+                shrink-0
+                text-[#A67C52]
+                sm:mt-0
+              "
+            />
+
+            <div className="min-w-0 flex-1">
+              <p
+                className="
+                  font-raleway
+                  text-[10px]
+                  font-bold
+                  uppercase
+                  tracking-[0.14em]
+                  text-[#8D623B]
+                "
+              >
+                Checkout was canceled
+              </p>
+
+              <p
+                className="
+                  mt-1
+                  font-play
+                  text-xs
+                  leading-6
+                  text-[#786D63]
+                  sm:text-sm
+                "
+              >
+                No payment has been taken. Your
+                bag is still here if you&rsquo;d
+                like to review it or try again.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={dismissCancelBanner}
+              aria-label="Dismiss checkout canceled notice"
+              className="
+                shrink-0
+                font-raleway
+                text-[10px]
+                font-bold
+                uppercase
+                tracking-[0.14em]
+                text-[#8D623B]
+                underline-offset-4
+                transition-colors
+                hover:text-[#29211C]
+                hover:underline
+              "
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
+
         {/* ================================================== */}
         {/* LOADING STATE                                     */}
         {/* ================================================== */}
@@ -1658,6 +1791,46 @@ const Cart: React.FC = () => {
                   {/* DELIVERY FIELDS */}
 
                   <div className="space-y-6">
+                    <div>
+                      <DeliveryInput
+                        name="email"
+                        label="Email Address"
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                        maxLength={254}
+                        register={register}
+                        errors={errors}
+                        validation={{
+                          required:
+                            "Please enter your email address.",
+                          pattern: {
+                            value:
+                              /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message:
+                              "Enter a valid email address.",
+                          },
+                          maxLength: {
+                            value: 254,
+                            message:
+                              "Email cannot exceed 254 characters.",
+                          },
+                        }}
+                      />
+
+                      <p
+                        className="
+                          mt-2
+                          font-play
+                          text-xs
+                          leading-6
+                          text-[#85786A]
+                        "
+                      >
+                        We&rsquo;ll send your order
+                        confirmation here.
+                      </p>
+                    </div>
+
                     <DeliveryInput
                       name="name"
                       label="Full Name"

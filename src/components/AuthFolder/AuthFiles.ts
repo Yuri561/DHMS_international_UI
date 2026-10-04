@@ -1,30 +1,43 @@
+// ------------------------------------------------------------
+// Auth-related API calls
+// ------------------------------------------------------------
+//
+// All requests go through the shared axios instance so they
+// inherit:
+//   - baseURL from VITE_API_URL
+//   - withCredentials: true (session + cartId cookies)
 
-// this file will contain all the files related to the AuthFolder
-// import axios from 'axios'
-// we import axios to make HTTP requests
-
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../setUpAxios";
 
 // User login (needs credentials for session cookie)
 export const userLogin = (formData: any) => {
-  return axios.post(`${API_URL}/login`, formData, { withCredentials: true });
+    return api.post(`/login`, formData);
 };
 
 // User registration
 export const userRegister = (formData: any) => {
-  return axios.post(`${API_URL}/register`, formData);
+    return api.post(`/register`, formData);
 };
 
 // Fetch all products
 export const fetchProducts = () => {
-  return axios.get(`${API_URL}/products`);
+    return api.get(`/products`);
 };
 
-// Reset password request (no session required; credentials optional)
+// Reset password request — triggers an email with the reset
+// link. The link itself is NOT returned in the response.
 export const resetPassword = (email: string) => {
-  return axios.post(`${API_URL}/reset-password-request`, { email });
+    return api.post(`/reset-password-request`, { email });
 };
 
-
+// Reset password apply — consumes the token from the email
+// link and sets the new password.
+export const applyPasswordReset = (
+    token: string,
+    newPassword: string
+) => {
+    return api.post(`/reset-password`, {
+        token,
+        newPassword,
+    });
+};

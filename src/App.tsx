@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import CheckOut from './components/CheckOut/CheckOut';
 import SuccessPage from './components/SuccessPage/SuccessPage';
 import CancelPage from './components/CancelPage/CancelPage';
+import ResetPassword from './components/SignIn/ResetPassword';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="checkout" element={<CheckOut />} />
           <Route path="success" element={<SuccessPage/>} />
           <Route path="cancel" element={<CancelPage/>} />
+          <Route path="reset-password" element={<ResetPassword/>} />
         </Route>
       </Routes>
     </>

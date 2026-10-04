@@ -27,18 +27,34 @@ import {
 // ORDER CONFIRMATION PAGE
 // ============================================================
 
+const SUPPORT_EMAIL =
+  (import.meta.env.VITE_SUPPORT_EMAIL as
+    | string
+    | undefined) ?? "";
+
 const SuccessPage: React.FC = () => {
   const reduceMotion = useReducedMotion();
 
   const [searchParams] = useSearchParams();
 
-  // Stripe can return the Checkout Session ID in
-  // the success URL.
-  //
-  // This identifies the checkout session but does
-  // not independently prove that payment succeeded.
+  // Stripe returns the Checkout Session ID in the
+  // success URL. It identifies the session but does
+  // not independently prove payment succeeded — the
+  // webhook on the backend is the source of truth.
 
   const sessionId = searchParams.get("session_id");
+
+  const supportMailto = SUPPORT_EMAIL
+    ? `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+        "Order enquiry"
+      )}${
+        sessionId
+          ? `&body=${encodeURIComponent(
+              `Reference: ${sessionId}\n\n`
+            )}`
+          : ""
+      }`
+    : "";
 
   const animationDuration = reduceMotion ? 0 : 0.6;
 
@@ -306,11 +322,11 @@ const SuccessPage: React.FC = () => {
                 sm:leading-9
               "
             >
-              Thank you for choosing DHMS International.
-
-              We appreciate you shopping with us
-              and look forward to helping you
-              celebrate your unique style.
+              Your payment has been received. We have
+              sent a confirmation to the email you used
+              at checkout, and a member of our team will
+              be in touch with you shortly to arrange
+              the next steps.
             </p>
 
             {/* PAYMENT INFORMATION */}
@@ -349,7 +365,7 @@ const SuccessPage: React.FC = () => {
                       text-[#29211C]
                     "
                   >
-                    Your checkout is complete
+                    Payment received
                   </h2>
 
                   <p
@@ -362,10 +378,10 @@ const SuccessPage: React.FC = () => {
                       sm:text-sm
                     "
                   >
-                    Your order is being processed.
-                    Once payment is confirmed, our
-                    team can prepare your items
-                    for fulfillment.
+                    Your order has been recorded.
+                    A member of our team will reach
+                    out shortly to arrange delivery
+                    or pickup.
                   </p>
                 </div>
               </div>
@@ -400,7 +416,7 @@ const SuccessPage: React.FC = () => {
                       text-[#29211C]
                     "
                   >
-                    Order updates
+                    Check your inbox
                   </h3>
 
                   <p
@@ -413,13 +429,10 @@ const SuccessPage: React.FC = () => {
                       sm:text-sm
                     "
                   >
-                    Look out for your order
-                    confirmation and payment receipt
-                    in your email inbox.
-
-                    If you have questions about
-                    your order, our team is here
-                    to help.
+                    Your receipt is on its way. If you
+                    don&rsquo;t see it within a few
+                    minutes, please check your spam or
+                    promotions folder.
                   </p>
                 </div>
               </div>
@@ -550,28 +563,53 @@ const SuccessPage: React.FC = () => {
 
             {/* CONTACT LINK */}
 
-            <Link
-              to="/contact"
-              className="
-                mt-8
-                inline-flex
-                min-h-11
-                items-center
-                gap-2
-                font-raleway
-                text-[10px]
-                font-semibold
-                uppercase
-                tracking-[0.12em]
-                text-[#9B724B]
-                transition-colors
-                hover:text-[#29211C]
-              "
-            >
-              Need help with your order?
+            {supportMailto ? (
+              <a
+                href={supportMailto}
+                className="
+                  mt-8
+                  inline-flex
+                  min-h-11
+                  items-center
+                  gap-2
+                  font-raleway
+                  text-[10px]
+                  font-semibold
+                  uppercase
+                  tracking-[0.12em]
+                  text-[#9B724B]
+                  transition-colors
+                  hover:text-[#29211C]
+                "
+              >
+                Need help with your order?
 
-              <ArrowUpRight size={15} />
-            </Link>
+                <ArrowUpRight size={15} />
+              </a>
+            ) : (
+              <Link
+                to="/contact"
+                className="
+                  mt-8
+                  inline-flex
+                  min-h-11
+                  items-center
+                  gap-2
+                  font-raleway
+                  text-[10px]
+                  font-semibold
+                  uppercase
+                  tracking-[0.12em]
+                  text-[#9B724B]
+                  transition-colors
+                  hover:text-[#29211C]
+                "
+              >
+                Need help with your order?
+
+                <ArrowUpRight size={15} />
+              </Link>
+            )}
           </div>
         </motion.div>
 
