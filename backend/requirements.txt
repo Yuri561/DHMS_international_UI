@@ -1,0 +1,29 @@
+# DHMS International — Python backend dependencies
+# Pinned to the versions this port was developed and tested against.
+
+# --- Web framework ---
+fastapi==0.115.4
+uvicorn[standard]==0.32.0
+
+# --- Session middleware signer (bundled, listed explicitly for clarity) ---
+itsdangerous==2.2.0
+
+# --- MongoDB (async) ---
+motor==3.6.0
+pymongo==4.9.2
+
+# --- Validation / HTTP / env ---
+pydantic==2.9.2
+pydantic[email]==2.9.2
+python-dotenv==1.0.1
+httpx==0.27.2
+
+# --- Auth ---
+bcrypt==4.2.0
+PyJWT==2.9.0
+
+# --- Payments ---
+stripe==10.11.0
+
+# --- Google OAuth (optional; only required if /auth/google is used) ---
+google-auth==2.35.0
