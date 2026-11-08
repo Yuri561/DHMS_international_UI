@@ -1,0 +1,112 @@
+# ============================================================
+# DHMS International — repo-root .gitignore
+# ============================================================
+# frontend/ and backend/ each have their own .gitignore for
+# their subtree. This file is the safety net for anything that
+# lands at the repo root or inside any folder that doesn't ship
+# its own rules.
+
+# ----------- Secrets / environment -----------
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# ----------- Node / JS -----------
+node_modules/
+.npm/
+.yarn/
+.pnp.*
+.pnpm-store/
+
+# Lock files stay committed (frontend/package-lock.json,
+# backend/_legacy_node/package-lock.json). Do NOT ignore them.
+
+# ----------- Build output -----------
+# These are generated. The frontend's Vite build goes to
+# frontend/dist, not root/dist, but we keep a root rule as a
+# safety net for anyone running `npm run build` from the wrong
+# directory.
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.turbo/
+.vite/
+
+# ----------- Python -----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.python-version
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ----------- Logs -----------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------- Caches -----------
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# ----------- Editors / IDE -----------
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# ----------- OS junk -----------
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ----------- Runtime / PIDs -----------
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# ----------- Local scratch / backups -----------
+*.local
+*.bak
+*.orig
+*.tmp
+*.temp
+ProductDb.*
+
+# Stray typo-named scratch file we moved into _legacy_node; keep
+# the pattern here so an accidental one at root is ignored too.
+vzx[hvc
