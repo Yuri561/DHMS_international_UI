@@ -1,6 +1,6 @@
 
 import React from "react";
-
+import type { Product } from "./types/Product";
 import {
   motion,
   useReducedMotion,
@@ -17,23 +17,23 @@ import {
 // PRODUCT GRID — EDITORIAL COLLECTION
 // ============================================================
 
-interface Product {
-  id: string | number;
-  _id?: string;
+// interface Product {
+//   id: string | number;
+//   _id?: string | number;
 
-  name: string;
-  price?: number;
-  imageUrl: string;
-  category: string;
-  rating: number;
+//   name: string;
+//   price?: number;
+//   imageUrl: string;
+//   category: string;
+//   rating: number;
 
-  brand?: string | { name?: string };
-  inStore?: boolean;
+//   brand?: string | { name?: string };
+//   inStore?: boolean;
 
-  colors?: string[];
-  description?: string;
-  size?: string[];
-}
+//   colors?: string[];
+//   description?: string;
+//   size?: string[];
+// }
 
 interface ProductGridProps {
   products: Product[];
@@ -625,7 +625,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     >
       {products.map((product, index) => (
         <ProductCard
-          key={product.id}
+          key={product._id ?? product.id}
           product={product}
           index={index}
           onProductClick={onProductClick}

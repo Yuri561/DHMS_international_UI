@@ -9,8 +9,6 @@ import {
   Truck,
 } from "lucide-react";
 
-import { CategoryTypes } from "./Sidebar/BrandTypes";
-
 // ============================================================
 // TYPES
 // ============================================================
@@ -42,6 +40,8 @@ interface ProductFilterProps {
 
   availableBrands: string[];
 
+  availableCategories: string[];
+
   availabilityFilter: string[];
 
   setAvailabilityFilter: React.Dispatch<
@@ -50,7 +50,7 @@ interface ProductFilterProps {
 }
 
 // ============================================================
-// PRODUCT FILTERS
+// PRODUCT FILTER
 // ============================================================
 
 const ProductFilters: React.FC<ProductFilterProps> = ({
@@ -67,13 +67,14 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
   setOrder,
 
   availableBrands,
+  availableCategories,
 
   availabilityFilter,
   setAvailabilityFilter,
 }) => {
-  // ----------------------------------------------------------
+  // ============================================================
   // CATEGORY
-  // ----------------------------------------------------------
+  // ============================================================
 
   const toggleCategory = (category: string) => {
     setSelectedCategory((current) =>
@@ -85,9 +86,9 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
     );
   };
 
-  // ----------------------------------------------------------
+  // ============================================================
   // BRAND
-  // ----------------------------------------------------------
+  // ============================================================
 
   const toggleBrand = (brand: string) => {
     setSelectedBrand((current) =>
@@ -99,9 +100,9 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
     );
   };
 
-  // ----------------------------------------------------------
+  // ============================================================
   // AVAILABILITY
-  // ----------------------------------------------------------
+  // ============================================================
 
   const toggleAvailability = (
     value: string
@@ -115,9 +116,9 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
     );
   };
 
-  // ----------------------------------------------------------
+  // ============================================================
   // RESET
-  // ----------------------------------------------------------
+  // ============================================================
 
   const clearFilters = () => {
     setSelectedCategory([]);
@@ -134,9 +135,9 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
     availabilityFilter.length > 0 ||
     order.length > 0;
 
-  // ----------------------------------------------------------
+  // ============================================================
   // LABELS
-  // ----------------------------------------------------------
+  // ============================================================
 
   const categoryLabel =
     selectedCategory.length === 0
@@ -163,7 +164,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
       "
     >
       {/* ====================================================== */}
-      {/* COMPACT FILTER BAR                                    */}
+      {/* FILTER BAR                                            */}
       {/* ====================================================== */}
 
       <div
@@ -185,13 +186,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
         {/* ==================================================== */}
 
         <FilterField label="Category">
-          <details
-            className="
-              group
-              relative
-              z-[70]
-            "
-          >
+          <details className="group relative z-[80]">
             <summary
               className="
                 flex
@@ -240,6 +235,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 className="
                   shrink-0
                   text-[#A67C52]
+
                   transition-transform
                   duration-200
 
@@ -278,9 +274,17 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
             >
               <div
                 className="
+                  sticky
+                  top-0
+                  z-10
+
                   mb-1
+
                   border-b
                   border-[#EEE6DD]
+
+                  bg-white
+
                   px-3
                   pb-2
                   pt-1
@@ -293,6 +297,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                     font-bold
                     uppercase
                     tracking-[0.14em]
+
                     text-[#A67C52]
                   "
                 >
@@ -300,88 +305,101 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 </p>
               </div>
 
-              {CategoryTypes.map(
-                (category) => {
-                  const active =
-                    selectedCategory.includes(
-                      category
-                    );
+              {availableCategories.length >
+              0 ? (
+                availableCategories.map(
+                  (category) => {
+                    const active =
+                      selectedCategory.includes(
+                        category
+                      );
 
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      onClick={() =>
-                        toggleCategory(
-                          category
-                        )
-                      }
-                      className="
-                        flex
-                        min-h-10
-                        w-full
-
-                        items-center
-                        justify-between
-
-                        gap-3
-
-                        px-3
-                        py-2
-
-                        text-left
-
-                        transition-colors
-                        duration-150
-
-                        hover:bg-[#F5EFE7]
-                      "
-                    >
-                      <span
+                    return (
+                      <button
+                        key={category}
+                        type="button"
+                        onClick={() =>
+                          toggleCategory(
+                            category
+                          )
+                        }
                         className="
-                          font-raleway
-                          text-[10px]
-                          font-semibold
-                          uppercase
-                          tracking-[0.055em]
-
-                          text-[#5E5146]
-                        "
-                      >
-                        {category}
-                      </span>
-
-                      <span
-                        className={`
                           flex
-                          h-4
-                          w-4
-                          shrink-0
+                          min-h-10
+                          w-full
 
                           items-center
-                          justify-center
+                          justify-between
 
-                          border
+                          gap-3
 
-                          ${
-                            active
-                              ? "border-[#29211C] bg-[#29211C] text-white"
-                              : "border-[#CFC2B4] bg-white"
-                          }
-                        `}
+                          px-3
+                          py-2
+
+                          text-left
+
+                          transition-colors
+                          duration-150
+
+                          hover:bg-[#F5EFE7]
+                        "
                       >
-                        {active && (
-                          <Check
-                            size={11}
-                            strokeWidth={
-                              2.5
+                        <span
+                          className="
+                            font-raleway
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-[0.055em]
+
+                            text-[#5E5146]
+                          "
+                        >
+                          {category}
+                        </span>
+
+                        <span
+                          className={`
+                            flex
+                            h-4
+                            w-4
+                            shrink-0
+
+                            items-center
+                            justify-center
+
+                            border
+
+                            ${
+                              active
+                                ? "border-[#29211C] bg-[#29211C] text-white"
+                                : "border-[#CFC2B4] bg-white"
                             }
-                          />
-                        )}
-                      </span>
-                    </button>
-                  );
-                }
+                          `}
+                        >
+                          {active && (
+                            <Check
+                              size={11}
+                              strokeWidth={2.5}
+                            />
+                          )}
+                        </span>
+                      </button>
+                    );
+                  }
+                )
+              ) : (
+                <p
+                  className="
+                    px-3
+                    py-5
+                    font-play
+                    text-xs
+                    text-[#928578]
+                  "
+                >
+                  No categories available.
+                </p>
               )}
             </div>
           </details>
@@ -392,13 +410,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
         {/* ==================================================== */}
 
         <FilterField label="Brand">
-          <details
-            className="
-              group
-              relative
-              z-[80]
-            "
-          >
+          <details className="group relative z-[90]">
             <summary
               className="
                 flex
@@ -488,7 +500,6 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 className="
                   sticky
                   top-0
-
                   z-10
 
                   mb-1
@@ -593,9 +604,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                           {active && (
                             <Check
                               size={11}
-                              strokeWidth={
-                                2.5
-                              }
+                              strokeWidth={2.5}
                             />
                           )}
                         </span>
@@ -625,13 +634,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
         {/* ==================================================== */}
 
         <FilterField label="Availability">
-          <div
-            className="
-              grid
-              grid-cols-2
-              gap-2
-            "
-          >
+          <div className="grid grid-cols-2 gap-2">
             <AvailabilityButton
               label="In Store"
               active={availabilityFilter.includes(
@@ -686,7 +689,6 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 left-3.5
                 top-1/2
                 -translate-y-1/2
-
                 text-[#C28B30]
               "
             />
@@ -761,7 +763,6 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 right-3
                 top-1/2
                 -translate-y-1/2
-
                 text-[#A67C52]
               "
             />
@@ -834,7 +835,6 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
                 right-3
                 top-1/2
                 -translate-y-1/2
-
                 text-[#A67C52]
               "
             />
@@ -955,13 +955,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
 
           {selectedCategory.length >
             0 && (
-            <span
-              className="
-                font-play
-                text-xs
-                text-[#71655A]
-              "
-            >
+            <span className="font-play text-xs text-[#71655A]">
               {selectedCategory.length}{" "}
               {selectedCategory.length ===
               1
@@ -970,18 +964,10 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
             </span>
           )}
 
-          {selectedBrand.length >
-            0 && (
-            <span
-              className="
-                font-play
-                text-xs
-                text-[#71655A]
-              "
-            >
+          {selectedBrand.length > 0 && (
+            <span className="font-play text-xs text-[#71655A]">
               {selectedBrand.length}{" "}
-              {selectedBrand.length ===
-              1
+              {selectedBrand.length === 1
                 ? "brand"
                 : "brands"}
             </span>
@@ -989,13 +975,7 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
 
           {availabilityFilter.length >
             0 && (
-            <span
-              className="
-                font-play
-                text-xs
-                text-[#71655A]
-              "
-            >
+            <span className="font-play text-xs text-[#71655A]">
               {
                 availabilityFilter.length
               }{" "}
@@ -1004,25 +984,13 @@ const ProductFilters: React.FC<ProductFilterProps> = ({
           )}
 
           {selectRating > 0 && (
-            <span
-              className="
-                font-play
-                text-xs
-                text-[#71655A]
-              "
-            >
+            <span className="font-play text-xs text-[#71655A]">
               {selectRating}+ stars
             </span>
           )}
 
           {order && (
-            <span
-              className="
-                font-play
-                text-xs
-                text-[#71655A]
-              "
-            >
+            <span className="font-play text-xs text-[#71655A]">
               {order}
             </span>
           )}
