@@ -4,8 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { motion } from 'framer-motion';
 
-import 'swiper/css';
-
 import bodyOil from '/body.png';
 import Bonnet from '/Kente bag.png';
 import Clothes from '/banner_dress.jpg';

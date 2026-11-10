@@ -8,10 +8,8 @@ import React, {
 import { HashLink } from "react-router-hash-link";
 
 import {
-  ArrowRight,
   ArrowUpRight,
   Check,
-  Instagram,
   Mail,
   MapPin,
   Phone,

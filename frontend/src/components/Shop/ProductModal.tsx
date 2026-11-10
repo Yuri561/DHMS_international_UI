@@ -8,7 +8,7 @@ import React, {
 import { Dialog } from "@headlessui/react";
 
 import {
-  AnimatePresence,
+
   motion,
   useReducedMotion,
 } from "framer-motion";
@@ -31,9 +31,10 @@ import {
 // PRODUCT MODAL — PRODUCT DETAIL EXPERIENCE
 // ============================================================
 
-interface Product {
-  id: string | number;
-  _id?: string;
+
+ interface Product {
+  id?: string | number;
+  _id?: string | number;
 
   name: string;
   price?: number;
@@ -316,44 +317,42 @@ const ProductModal: React.FC<ProductModalProps> = ({
           lg:p-6
         "
       >
-        <Dialog.Panel
-          as={motion.div}
-          initial={
-            reduceMotion
-              ? false
-              : {
-                  opacity: 0,
-                  y: 25,
-                  scale: 0.985,
-                }
-          }
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          transition={{
-            duration: reduceMotion
-              ? 0
-              : 0.35,
-            ease: "easeOut",
-          }}
-          className="
-            relative
-            my-auto
-            max-h-[calc(100dvh-1rem)]
-            w-full
-            max-w-[1150px]
-            min-w-0
-            overflow-y-auto
-            overscroll-contain
-            bg-[#F8F5EF]
-            text-[#29211C]
-            shadow-[0_30px_100px_rgba(0,0,0,0.35)]
-            sm:max-h-[calc(100dvh-2rem)]
-            lg:max-h-[calc(100dvh-3rem)]
-          "
-        >
+        <Dialog.Panel as="div" className="relative my-auto w-full max-w-[1150px] min-w-0">
+          <motion.div
+            initial={
+              reduceMotion
+                ? false
+                : {
+                    opacity: 0,
+                    y: 25,
+                    scale: 0.985,
+                  }
+            }
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            transition={{
+              duration: reduceMotion ? 0 : 0.35,
+              ease: "easeOut",
+            }}
+            className="
+              relative
+              my-auto
+              max-h-[calc(100dvh-1rem)]
+              w-full
+              max-w-[1150px]
+              min-w-0
+              overflow-y-auto
+              overscroll-contain
+              bg-[#F8F5EF]
+              text-[#29211C]
+              shadow-[0_30px_100px_rgba(0,0,0,0.35)]
+              sm:max-h-[calc(100dvh-2rem)]
+              lg:max-h-[calc(100dvh-3rem)]
+            "
+          >
           {/* ================================================== */}
           {/* CLOSE BUTTON                                     */}
           {/* ================================================== */}
@@ -460,6 +459,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   lg:block
                 "
               />
+        
 
               {/* IMAGE */}
 
@@ -1097,6 +1097,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </div>
             </div>
           </div>
+          </motion.div>
         </Dialog.Panel>
       </div>
     </Dialog>

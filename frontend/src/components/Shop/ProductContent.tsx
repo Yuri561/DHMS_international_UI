@@ -79,7 +79,7 @@ interface ProductProps {
 }
 
 interface Product {
-  id: string | number;
+  id?: string | number;
   _id?: string | number;
 
   name: string;
@@ -2407,9 +2407,26 @@ const ProductContent: React.FC<
 
       {selectedProduct && (
         <ProductModal
-          product={
-            selectedProduct
-          }
+          product={(() => {
+            const {
+              id,
+              ...productWithoutId
+            } = selectedProduct;
+
+            return {
+              ...productWithoutId,
+              ...(id == null
+                ? {}
+                : { id }),
+              ...(selectedProduct._id == null
+                ? {}
+                : {
+                    _id: String(
+                      selectedProduct._id
+                    ),
+                  }),
+            } as Product;
+          })()}
           onClose={closeModal}
           onAddToCart={
             addToCart

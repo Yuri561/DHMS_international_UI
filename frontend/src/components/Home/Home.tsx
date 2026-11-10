@@ -5,8 +5,7 @@ import Testimonials from '../Testimonials/TestimonialsV2'
 // import Banner from '../Banner/Banner'
 import Highlights from '../Highlights/HighlightsV2'
 import InStore from '../InStore/InStoreV2'
-import RevampHero from '../Hero/RevampHero'
-import BannerRevamp from '../Banner/BannerRevamp'
+
 import HeroV2 from '../Hero/HeroV2';
 import BannerV2 from '../Banner/BannerV2';
 
